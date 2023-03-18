@@ -119,3 +119,5 @@ export PIPENV_VENV_IN_PROJECT=true
 . "$HOME/.asdf/asdf.sh"
 . "$HOME/.asdf/completions/asdf.bash"
 export PATH="$PATH:~/go/bin"
+
+echo Hellou
