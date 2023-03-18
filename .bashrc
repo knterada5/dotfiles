@@ -115,8 +115,10 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
 export PIPENV_VENV_IN_PROJECT=true
 . "$HOME/.asdf/asdf.sh"
 . "$HOME/.asdf/completions/asdf.bash"
-export PATH="$PATH:~/go/bin"
+
+export PATH="$PATH:~/.go/bin"
 
