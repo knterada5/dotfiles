@@ -25,7 +25,13 @@ end
 
 
 -- Set colorscheme.
-vim.cmd("colorscheme tokyonight-night")
+require("tokyonight").setup({
+  styles = {
+    comments = { italic = false }
+  }
+})
+vim.cmd.colorscheme "tokyonight-night"
+
 
 -- Setting LSP by Mason.
 require('mason').setup()
@@ -38,6 +44,7 @@ require('mason-lspconfig').setup_handlers({ function(server)
   require('lspconfig')[server].setup(opt)
   end
 })
+
 
 -- LSP hundlers
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
