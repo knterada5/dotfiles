@@ -9,6 +9,7 @@ require('jetpack.packer').startup(function(use)
 	use 'hrsh7th/vim-vsnip'
 	use 'akinsho/toggleterm.nvim'
 	use 'folke/tokyonight.nvim'
+  use 'nvim-lualine/lualine.nvim'
 end)
 
 
@@ -31,6 +32,11 @@ require("tokyonight").setup({
   }
 })
 vim.cmd.colorscheme "tokyonight-night"
+require("lualine").setup {
+  options = {
+    theme = 'tokyonight'
+  }
+}
 
 
 -- Setting LSP by Mason.
