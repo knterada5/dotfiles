@@ -21,8 +21,9 @@ git checkout stable
 sudo make install
 
 # Make nvim config.
-mkdir ~/.config
-ln -s ~/.dotfiles/nvim ~/.config/nvim
+cd $HOME
+mkdir $HOME/.config
+ln -s $HOME/.dotfiles/nvim ~/.config/nvim
 
 # Install vim-jetpack.
 curl -fLo ~/.local/share/nvim/site/pack/jetpack/opt/vim-jetpack/plugin/jetpack.vim --create-dirs https://raw.githubusercontent.com/tani/vim-jetpack/master/plugin/jetpack.vim
@@ -40,8 +41,8 @@ go install github.com/jesseduffield/lazygit@latest
 mv $HOME/go $HOME/.go
 
 # Remove install file.
-rm $HOME/go1.20.3.linux-amd64.tar.gz
-rm -r $HOME/neovim
+sudo rm $HOME/go1.20.3.linux-amd64.tar.gz
+sudo rm -r $HOME/neovim
 
 # Set git config.
 cd $HOME/.dotfiles
