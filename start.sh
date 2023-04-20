@@ -6,6 +6,7 @@ mv $HOME/.profile $HOME/.profile_bak
 ln -s $HOME/.dotfiles/.bashrc $HOME/.bashrc
 ln -s $HOME/.dotfiles/.profile $HOME/.profile
 source $HOME/.profile
+source $HOME/.bashrc
 
 # Update repositories.
 sudo apt update && sudo apt upgrade -y
@@ -32,9 +33,6 @@ wget https://go.dev/dl/go1.20.3.linux-amd64.tar.gz
 # Decompress file.
 sudo tar -C /usr/local -xzf go1.20.3.linux-amd64.tar.gz
 
-# Export PATH.
-source $HOME/.profile
-
 # Install lazygit via go.
 go install github.com/jesseduffield/lazygit@latest
 
@@ -43,6 +41,7 @@ mv $HOME/go $HOME/.go
 
 # Remove install file.
 rm $HOME/go1.20.3.linux-amd64.tar.gz
+rm -r $HOME/neovim
 
 # Set git config.
 cd $HOME/.dotfiles
