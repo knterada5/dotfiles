@@ -53,6 +53,8 @@ cd $HOME
 
 # Install vim-jetpack.
 curl -fLo ~/.local/share/nvim/site/pack/jetpack/opt/vim-jetpack/plugin/jetpack.vim --create-dirs https://raw.githubusercontent.com/tani/vim-jetpack/master/plugin/jetpack.vim
+nvim
+mv $HOME/.config/nvim/_init.lua $HOME/.config/nvim/init.lua
 
 # Download Go.
 wget https://go.dev/dl/go1.20.3.linux-amd64.tar.gz
