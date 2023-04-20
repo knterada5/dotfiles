@@ -5,8 +5,6 @@ mv $HOME/.bashrc $HOME/.bashrc_bak
 mv $HOME/.profile $HOME/.profile_bak
 ln -s $HOME/.dotfiles/.bashrc $HOME/.bashrc
 ln -s $HOME/.dotfiles/.profile $HOME/.profile
-source $HOME/.profile
-source $HOME/.bashrc
 
 # Update repositories.
 sudo apt update && sudo apt upgrade -y
@@ -14,7 +12,27 @@ sudo apt update && sudo apt upgrade -y
 # Install required packages for neovim.
 sudo apt install ninja-build gettext cmake unzip curl -y
 
-# Clone and install neovim
+# Install required packages for python.
+sudo apt install build-essential libbz2-dev libdb-dev libreadline-dev libffi-dev libgdbm-dev liblzma-dev libncursesw5-dev libsqlite3-dev libssl-dev zlib1g-dev uuid-dev tk-dev -y
+
+# Install required packages for asdf-nodejs.
+sudo apt install dirmngr gpg curl gawk -y
+
+# Install asdf.
+git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.11.3
+source $HOME/.profile
+
+# Install asdf-nodejs.
+asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
+asdf install nodejs latest
+asdf global nodejs latest
+
+# Install asdf-python.
+asdf plugin add python
+asdf install python latest
+asdf global python latest
+
+# Clone and install neovim.
 git clone https://github.com/neovim/neovim
 cd neovim && make CMAKE_BUILD_TYPE=RelWithDebInfo
 git checkout stable
