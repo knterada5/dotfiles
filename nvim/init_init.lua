@@ -14,5 +14,4 @@ end)
 
 vim.cmd 'JetpackSync'
 vim.cmd 'q'
-vim.api.nvim_exec("!touch "..HOME.."/.config/nvim/activated", true)
 vim.cmd('q')
