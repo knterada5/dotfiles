@@ -37,9 +37,9 @@ git clone https://github.com/neovim/neovim
 cd neovim && make CMAKE_BUILD_TYPE=RelWithDebInfo
 git checkout stable
 sudo make install
+cd $HOME
 
 # Make nvim config.
-cd $HOME
 mkdir $HOME/.config
 ln -s $HOME/.dotfiles/nvim ~/.config/nvim
 
@@ -80,3 +80,4 @@ echo -n "Enter your git user.email: "
 read USER_EMAIL
 git config --local user.name "$USER_NAME"
 git config --local user.email "$USR_EMAIL"
+cd $HOME
