@@ -49,6 +49,7 @@ pip3 install --upgrade pip
 pip3 install pipenv
 python -m pipenv --python 3
 sudo $HOME/.config/nvim/.venv/bin/python3 -m pip install pynvim
+cd $HOME
 
 # Install vim-jetpack.
 curl -fLo ~/.local/share/nvim/site/pack/jetpack/opt/vim-jetpack/plugin/jetpack.vim --create-dirs https://raw.githubusercontent.com/tani/vim-jetpack/master/plugin/jetpack.vim
