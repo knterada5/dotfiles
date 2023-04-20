@@ -43,6 +43,11 @@ cd $HOME
 mkdir $HOME/.config
 ln -s $HOME/.dotfiles/nvim ~/.config/nvim
 
+# Install pynvim
+cd $HOME/.config/nvim
+python -m pipenv --python 3
+sudo $HOME/.config/nvim/.venv/bin/python3 -m pip install pynvim
+
 # Install vim-jetpack.
 curl -fLo ~/.local/share/nvim/site/pack/jetpack/opt/vim-jetpack/plugin/jetpack.vim --create-dirs https://raw.githubusercontent.com/tani/vim-jetpack/master/plugin/jetpack.vim
 
