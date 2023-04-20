@@ -45,6 +45,8 @@ ln -s $HOME/.dotfiles/nvim ~/.config/nvim
 
 # Install pynvim
 cd $HOME/.config/nvim
+pip3 install --upgrade pip
+pip3 install pipenv
 python -m pipenv --python 3
 sudo $HOME/.config/nvim/.venv/bin/python3 -m pip install pynvim
 
