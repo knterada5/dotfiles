@@ -7,16 +7,16 @@ ln -s $HOME/.dotfiles/.bashrc $HOME/.bashrc
 ln -s $HOME/.dotfiles/.profile $HOME/.profile
 
 # Update repositories.
-sudo apt update && sudo apt upgrade -y
+sudo -S apt update && sudo apt upgrade -y
 
 # Install required packages for neovim.
-sudo apt install ninja-build gettext cmake unzip curl -y
+sudo -S apt install ninja-build gettext cmake unzip curl -y
 
 # Install required packages for python.
-sudo apt install build-essential libbz2-dev libdb-dev libreadline-dev libffi-dev libgdbm-dev liblzma-dev libncursesw5-dev libsqlite3-dev libssl-dev zlib1g-dev uuid-dev tk-dev -y
+sudo -S apt install build-essential libbz2-dev libdb-dev libreadline-dev libffi-dev libgdbm-dev liblzma-dev libncursesw5-dev libsqlite3-dev libssl-dev zlib1g-dev uuid-dev tk-dev -y
 
 # Install required packages for asdf-nodejs.
-sudo apt install dirmngr gpg curl gawk -y
+sudo -S apt install dirmngr gpg curl gawk -y
 
 # Install asdf.
 git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.11.3
@@ -36,7 +36,7 @@ asdf global python latest
 git clone https://github.com/neovim/neovim
 cd neovim && make CMAKE_BUILD_TYPE=RelWithDebInfo
 git checkout stable
-sudo make install
+sudo -S make install
 cd $HOME
 
 # Make nvim config.
@@ -48,7 +48,7 @@ cd $HOME/.config/nvim
 pip3 install --upgrade pip
 pip3 install pipenv
 python -m pipenv --python 3
-sudo $HOME/.config/nvim/.venv/bin/python3 -m pip install pynvim
+sudo -S $HOME/.config/nvim/.venv/bin/python3 -m pip install pynvim
 cd $HOME
 
 # Install vim-jetpack.
@@ -63,7 +63,7 @@ mv $HOME/.config/nvim/_init.lua $HOME/.config/nvim/init.lua
 wget https://go.dev/dl/go1.20.3.linux-amd64.tar.gz
 
 # Decompress file.
-sudo tar -C /usr/local -xzf go1.20.3.linux-amd64.tar.gz
+sudo -S tar -C /usr/local -xzf go1.20.3.linux-amd64.tar.gz
 
 # Install lazygit via go.
 go install github.com/jesseduffield/lazygit@latest
@@ -72,8 +72,8 @@ go install github.com/jesseduffield/lazygit@latest
 mv $HOME/go $HOME/.go
 
 # Remove install file.
-sudo rm $HOME/go1.20.3.linux-amd64.tar.gz
-sudo rm -r $HOME/neovim
+sudo -S rm $HOME/go1.20.3.linux-amd64.tar.gz
+sudo -S rm -r $HOME/neovim
 
 # Set git config.
 cd $HOME/.dotfiles
