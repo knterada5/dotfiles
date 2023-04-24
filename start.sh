@@ -60,10 +60,27 @@ mv $HOME/.config/nvim/init.lua $HOME/.config/nvim/init_init.lua
 mv $HOME/.config/nvim/_init.lua $HOME/.config/nvim/init.lua
 
 # Download Go.
-wget https://go.dev/dl/go1.20.3.linux-amd64.tar.gz
+OS=`uname | tr A-Z a-z`
+
+case `uname -m | tr A-Z a-z` in
+  "aarch64" | "arm64")
+    ARCH="arm64" ;;
+  "x86_64" | "x64" "amd64")
+    ARCH="amd64" ;;
+  *)
+    PS3="Select your architecture: "
+    select word in 'x86' 'x86-64' 'ARM64' 'ARMv6'; do
+      echo "Download go for $word"
+
+      break
+    done ;;
+esac
+
+# Download Go.
+curl -oL go_install.tar.gz $GO ;;
 
 # Decompress file.
-sudo -S tar -C /usr/local -xzf go1.20.3.linux-amd64.tar.gz
+sudo -S tar -C /usr/local -xvzf go_install.tar.gz
 
 # Install lazygit via go.
 go install github.com/jesseduffield/lazygit@latest
