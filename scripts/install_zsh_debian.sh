@@ -17,5 +17,5 @@ else
   else
     echo "Change login shell to zsh."
     chsh -s /bin/zsh
+  fi
 fi
-
