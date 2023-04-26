@@ -9,7 +9,14 @@ DIR=$(cd $(dirname $0); pwd)
 
 case $OS in
   "linux")
-    . $DIR/scripts/install_linux.sh $GO_VER ;;
+    DIST=`cat /etc/*release | tr A-Z a-z`
+    if [[ $DIST =~ "centos" ]] || [[ $DIST =~ "fedora" ]] || [[ $DIST =~ "red hat" ]]; then
+      echo "Red Hat key"
+    elif [[ $DIST =~ "debian" ]] || [[ $DIST =~ "ubuntu" ]]; then
+      . $DIR/scripts/install_zsh_debian.sh
+      zsh $DIR/scripts/install_packages_debian.sh $GO_VER
+      zsh
+    fi ;;
   "darwin")
-    . $DIR/scripts/install_macos.sh $GO_VER ;;
+    . $DIR/scripts/install_zsh_macos.sh $GO_VER ;;
 esac

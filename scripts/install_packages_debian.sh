@@ -1,25 +1,17 @@
-#!/bin/bash
+#!/bin/zsh
 
 # GO latest version.
 GO_VER=$1
 
 # Make symbolic link
-#mv $HOME/.bashrc $HOME/.bashrc_bak
-#mv $HOME/.profile $HOME/.profile_bak
-#ln -s $HOME/.dotfiles/.bashrc $HOME/.bashrc
-#ln -s $HOME/.dotfiles/.profile $HOME/.profile
+mv $HOME/.zshrc $HOME/.zshrc_bak
+mv $HOME/.zsh_aliases $HOME/.zsh_aliases_bak
+ln -s $HOME/.dotfiles/.zshrc $HOME/.zshrc
+ln -s $HOME/.dotfiles/.zsh_aliases $HOME/.zsh_aliases
+. $HOME/.zshrc
 
 # Update repositories.
 sudo -S apt update && sudo apt upgrade -y
-
-# Install zsh.
-ZSH=`which zsh`
-if [[ $ZSH =~ "not found" ]]; then
-  sudo apt install zsh -y
-  chsh
-else
-  return
-fi
 
 # Install required packages for neovim.
 sudo -S apt install ninja-build gettext cmake unzip curl -y
@@ -32,7 +24,7 @@ sudo -S apt install dirmngr gpg curl gawk -y
 
 # Install asdf.
 git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.11.3
-source $HOME/.profile
+. $HOME/.zshrc
 
 # Install asdf-nodejs.
 asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
