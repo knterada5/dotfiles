@@ -1,8 +1,11 @@
 #!/bin/zsh
 
-# GO latest version.
-GO_VER=$1
+# Arguments.
+LOG=$1
+GO_VER="1.20.3"
 
+print "# Install packages." >> $LOG
+print "1. asdf\n2. asdf-nodejs\n3. asdf-python\n4. neovim\n5. vim-jetpack\n6. GO\n7. lazygit"
 # Make symbolic link
 mv $HOME/.zshrc $HOME/.zshrc_bak
 mv $HOME/.zsh_aliases $HOME/.zsh_aliases_bak
@@ -26,15 +29,25 @@ sudo -S apt install dirmngr gpg curl gawk -y
 git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.11.3
 . $HOME/.zshrc
 
+print "# asdf info -------------------------\nasdf version:" >> $LOG
+asdf version >> $LOG
+
+
 # Install asdf-nodejs.
 asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
 asdf install nodejs latest
 asdf global nodejs latest
 
+print "\nasdf-nodejs version:" >> $LOG
+node -v >> $LOG
+
 # Install asdf-python.
 asdf plugin add python
 asdf install python latest
 asdf global python latest
+
+print "\nasdf-python version:" >> $LOG
+python -V
 
 # Clone and install neovim.
 git clone https://github.com/neovim/neovim
@@ -42,6 +55,9 @@ cd neovim && make CMAKE_BUILD_TYPE=RelWithDebInfo
 git checkout stable
 sudo -S make install
 cd $HOME
+
+print "\nneovim version:" >> $LOG
+nvim -v >> $LOG
 
 # Make nvim config.
 mkdir $HOME/.config
@@ -97,9 +113,9 @@ case `uname -m | tr A-Z a-z` in
 esac
 
 # Download Go.
-if [ ! $GO_ARCH ]; then
+if $GO_ARCH ; then
   GO="go${GO_VER}.linux-${ARCH}.tar.gz"
-  curl -oL go_install.tar.gz $GO
+  curl -o $HOME/go_install.tar.gz -L https://go.dev/dl/$GO
 
   # Decompress file.
   sudo -S tar -C /usr/local -xvzf go_install.tar.gz
@@ -109,6 +125,9 @@ if [ ! $GO_ARCH ]; then
 
   # Change go directory name.
   mv $HOME/go $HOME/.go
+
+  print "\n# GO info.\nInstall file: $GO" >> $LOG
+
 else
   cd $HOME
   LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
@@ -117,10 +136,12 @@ else
   sudo install lazygit /usr/local/bin
 fi
 
+
 # Remove install file.
 sudo -S rm $HOME/go1.20.3.linux-amd64.tar.gz
 sudo -S rm -r $HOME/neovim
 sudo -S rm -r $HOME/lazygit
+sudo -S rm $HOME/lazygit.tar.gz
 
 # Set git config.
 cd $HOME
