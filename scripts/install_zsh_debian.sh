@@ -5,7 +5,7 @@ sudo -S apt update && sudo apt upgrade -y
 
 # Install zsh.
 ZSH=`which zsh`
-if [[ $ZSH =~ "not found" ]]; then
+if [[ $ZSH =~ "not found" ]] || [[ $ZSH == "" ]]; then
   echo "Zsh is not installed."
   echo "Install zsh."
   sudo apt install zsh -y
