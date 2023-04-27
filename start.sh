@@ -19,7 +19,7 @@ case $OS in
     elif [[ $DIST =~ "debian" ]] || [[ $DIST =~ "ubuntu" ]]; then
       echo "OS: Linux\nDistribution: Debian" >> $LOG
       . $DIR/scripts/install_zsh_debian.sh $LOG
-      zsh $DIR/scripts/install_packages_debian.sh $LOG $GO_VER
+      zsh $DIR/scripts/install_packages_debian.sh $LOG
       zsh
     fi ;;
   "darwin")

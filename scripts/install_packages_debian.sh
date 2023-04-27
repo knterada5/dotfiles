@@ -5,7 +5,8 @@ LOG=$1
 GO_VER="1.20.3"
 
 print "# Install packages." >> $LOG
-print "1. asdf\n2. asdf-nodejs\n3. asdf-python\n4. neovim\n5. vim-jetpack\n6. GO\n7. lazygit"
+print "1. asdf\n2. asdf-nodejs\n3. asdf-python\n4. neovim\n5. vim-jetpack\n6. GO\n7. lazygit" >> $LOG
+
 # Make symbolic link
 mv $HOME/.zshrc $HOME/.zshrc_bak
 mv $HOME/.zsh_aliases $HOME/.zsh_aliases_bak
@@ -29,7 +30,7 @@ sudo -S apt install dirmngr gpg curl gawk -y
 git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.11.3
 . $HOME/.zshrc
 
-print "# asdf info -------------------------\nasdf version:" >> $LOG
+print "\n# asdf version:" >> $LOG
 asdf version >> $LOG
 
 
@@ -38,7 +39,7 @@ asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
 asdf install nodejs latest
 asdf global nodejs latest
 
-print "\nasdf-nodejs version:" >> $LOG
+print "\n# asdf-nodejs version:" >> $LOG
 node -v >> $LOG
 
 # Install asdf-python.
@@ -46,8 +47,8 @@ asdf plugin add python
 asdf install python latest
 asdf global python latest
 
-print "\nasdf-python version:" >> $LOG
-python -V
+print "\n# asdf-python version:" >> $LOG
+python -V >> $LOG
 
 # Clone and install neovim.
 git clone https://github.com/neovim/neovim
@@ -56,7 +57,7 @@ git checkout stable
 sudo -S make install
 cd $HOME
 
-print "\nneovim version:" >> $LOG
+print "\n# neovim version:" >> $LOG
 nvim -v >> $LOG
 
 # Make nvim config.
@@ -126,7 +127,8 @@ if $GO_ARCH ; then
   # Change go directory name.
   mv $HOME/go $HOME/.go
 
-  print "\n# GO info.\nInstall file: $GO" >> $LOG
+  print "\n# GO version:" >> $LOG
+  go version >> $LOG
 
 else
   cd $HOME
@@ -136,6 +138,8 @@ else
   sudo install lazygit /usr/local/bin
 fi
 
+print "\n# lazygit version:" >> $LOG
+lazygit -v >> $LOG
 
 # Remove install file.
 sudo -S rm $HOME/go1.20.3.linux-amd64.tar.gz
