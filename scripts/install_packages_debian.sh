@@ -51,7 +51,7 @@ cd $HOME
 
 # Install vim-jetpack.
 curl -fLo ~/.local/share/nvim/site/pack/jetpack/opt/vim-jetpack/plugin/jetpack.vim --create-dirs https://raw.githubusercontent.com/tani/vim-jetpack/master/plugin/jetpack.vim
-nvim -u $DOTDIR/setup.lua
+nvim -u $DOTDIR/scripts/setup.lua
 
 # Install lazygit via go.
 go install github.com/jesseduffield/lazygit@latest
@@ -64,7 +64,7 @@ sudo -S rm -r $HOME/neovim
 sudo -S rm -r $HOME/lazygit
 
 # Log of versions.
-zsh $DOTDIR/scripts/log.sh
+zsh $DOTDIR/scripts/log.sh >> $HOME/.installed_versions.log
 
 # Set git config.
 echo -n "Enter your git user.name: "
