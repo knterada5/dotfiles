@@ -55,13 +55,18 @@ nvim -u $DOTDIR/scripts/setup.lua
 
 # Install lazygit via go.
 go install github.com/jesseduffield/lazygit@latest
+asdf reshim golang
 
-# Change go directory name.
-# mv $HOME/go $HOME/.go
+# Install LSP via Mason
+while read line; do
+  if [[ ! $line =~ "#" ]] && [[ ! -z $line ]]; then
+    LSP="$LSP$line "
+  fi
+done < $DOTDIR/data/mason_lsp
+nvim --headless +"MasonInstall $LSP" +q
 
 # Remove install file.
 sudo -S rm -r $HOME/neovim
-sudo -S rm -r $HOME/lazygit
 
 # Log of versions.
 zsh $DOTDIR/scripts/log.sh >> $HOME/.installed_versions.log
@@ -74,11 +79,3 @@ read USER_EMAIL
 git config --global user.name "$USER_NAME"
 git config --global user.email "$USR_EMAIL"
 cd $HOME
-
-# Install LSP via Mason
-while read line; do
-  if [[ ! $line =~ "#" ]] && [[ ! -z $line ]]; then
-    LSP="$LSP$line "
-  fi
-done < $DOTDIR/data/lsp
-nvim -c "MasonInstall $LSP"
