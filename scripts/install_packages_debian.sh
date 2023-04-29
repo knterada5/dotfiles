@@ -7,6 +7,9 @@ ln -s $HOME/.dotfiles/.zshrc $HOME/.zshrc
 ln -s $HOME/.dotfiles/.zsh_aliases $HOME/.zsh_aliases
 . $HOME/.zshrc
 
+# dotfiles directory.
+DIR=$(cd $(dirname $0); pwd)
+
 # Update repositories.
 sudo -S apt update && sudo apt upgrade -y
 
