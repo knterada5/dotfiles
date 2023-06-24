@@ -11,6 +11,7 @@ dirmngr gpg curl gawk -y
 build-essential libcurl3-dev libreadline-dev gfortran
 liblzma-dev liblzma5 libbz2-1.0 libbz2-dev
 xorg-dev libbz2-dev liblzma-dev libpcre2-dev
+libxml2-dev
 
 # for php
 autoconf bison build-essential curl gettext git libgd-dev libcurl4-openssl-dev libedit-dev libicu-dev libjpeg-dev libmysqlclient-dev libonig-dev libpng-dev libpq-dev libreadline-dev libsqlite3-dev libssl-dev libxml2-dev libzip-dev openssl pkg-config re2c zlib1g-dev
