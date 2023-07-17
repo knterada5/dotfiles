@@ -41,3 +41,7 @@ asdf plugin add php
 asdf install php latest
 asdf global php latest
 
+# Install asdf-rust
+asdf plugin-add rust https://github.com/asdf-community/asdf-rust.git
+asdf install rust latest
+asdf global rust latest
