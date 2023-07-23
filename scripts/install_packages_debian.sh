@@ -49,21 +49,19 @@ python -m pipenv --python 3
 sudo -S $HOME/.config/nvim/.venv/bin/python3 -m pip install pynvim
 cd $HOME
 
-# Install vim-jetpack.
-curl -fLo ~/.local/share/nvim/site/pack/jetpack/opt/vim-jetpack/plugin/jetpack.vim --create-dirs https://raw.githubusercontent.com/tani/vim-jetpack/master/plugin/jetpack.vim
-nvim -u $DOTDIR/scripts/setup.lua
+
+# Install NvChad
+git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1 && nvim
+rm -rf $HOME/.config/nvim/lua/custom
+ln -s $HOME/.dotfiles/custom $HOME/.config/nvim/lua/custom
+cd $HOME
 
 # Install lazygit via go.
 go install github.com/jesseduffield/lazygit@latest
 asdf reshim golang
 
 # Install LSP via Mason
-while read line; do
-  if [[ ! $line =~ "#" ]] && [[ ! -z $line ]]; then
-    LSP="$LSP$line "
-  fi
-done < $DOTDIR/data/mason_lsp
-nvim --headless +"MasonInstall $LSP" +q
+nvim --headless +"MasonInstallAll" +q
 
 # Remove install file.
 sudo -S rm -r $HOME/neovim
