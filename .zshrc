@@ -39,9 +39,6 @@ export PIPENV_VENV_IN_PROJECT=true
 
 # setting asdf.
 . "$HOME/.asdf/asdf.sh"
-. "$HOME/.asdf/completions/asdf.bash"
-fpath=(${ASDF_DIR}/completions $fpath)
-autoload -Uz compinit && compinit
 
 # GO
 export PATH="$PATH:/usr/local/go/bin"
@@ -60,5 +57,5 @@ export GTK_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
 export DefaultIMModule=fcitx
 
-fcitx > /dev/null 2>&1 &
-fcitx-autostart > /dev/null 2>&1 &
+fcitx > /dev/null 2>&1
+fcitx-autostart > /dev/null 2>&1
