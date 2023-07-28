@@ -1,5 +1,12 @@
 #/bin/bash
 
+echo "export QT_IM_MODULE=fcitx" >> $HOME/.bashrc
+echo "export GTK_IM_MODULE=fcitx" >> $HOME/.bashrc
+echo "export XMODIFIERS=@im=fcitx" >> $HOME/.bashrc
+echo "export DefaultIMModule=fcitx" >> $HOME/.bashrc
+echo "fcitx > /dev/null 2>&1 &" >> $HOME/.bashrc
+echo "fcitx-autostart > /dev/null 2>&1 &" >> $HOME/.bashrc
+
 sudo apt install -y language-selector-common
 sudo apt install -y $(check-language-support -l ja) fcitx-mozc
 sudo apt install -y fonts-noto-color-emoji
