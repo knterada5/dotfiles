@@ -69,6 +69,21 @@ sudo -S rm -r $HOME/neovim
 # Log of versions.
 zsh $DOTDIR/scripts/log.sh >> $HOME/.installed_versions.log
 
+
+# Install fonts
+git clone --depth 1 https://github.com/ryanoasis/nerd-fonts.git
+./nerd-fonts/install.sh SourceCodePro
+
+
+# Setting IME
+im-config -n fcitx
+fcitx > /dev/null 2>&1 &
+sleep 5
+rm $HOME/.config/fcitx/profile $HOME/.config/fcitx/config
+ln -s $HOME/.dotfiles/fcitx/profile $HOME/.config/fcitx/profile
+ln -s $HOME/.dotfiles/fcitx/config $HOME/.config/fcitx/config
+
+
 # Set git config.
 echo -n "Enter your git user.name: "
 read USER_NAME

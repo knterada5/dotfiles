@@ -13,7 +13,7 @@ case $OS in
     elif [[ $DIST =~ "debian" ]] || [[ $DIST =~ "ubuntu" ]]; then
       . $DIR/scripts/install_zsh_debian.sh
       zsh $DIR/scripts/install_packages_debian.sh
-      zsh
+      exit
     fi ;;
   "darwin")
     . $DIR/scripts/install_zsh_macos.sh $GO_VER ;;
