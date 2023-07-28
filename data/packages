@@ -15,3 +15,10 @@ libxml2-dev
 
 # for php
 autoconf bison build-essential curl gettext git libgd-dev libcurl4-openssl-dev libedit-dev libicu-dev libjpeg-dev libmysqlclient-dev libonig-dev libpng-dev libpq-dev libreadline-dev libsqlite3-dev libssl-dev libxml2-dev libzip-dev openssl pkg-config re2c zlib1g-dev
+
+# for japanese font
+language-selector-common
+$(check-language-support -l ja)
+fcitx-mozc
+fonts-noto-color-emoji
+fonts-symbola

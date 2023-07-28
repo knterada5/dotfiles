@@ -1,0 +1,2 @@
+$(check-language-support -l ja)
+fcitx-mozc
