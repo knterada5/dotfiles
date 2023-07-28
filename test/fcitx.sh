@@ -15,6 +15,7 @@ git clone --depth 1 https://github.com/ryanoasis/nerd-fonts.git
 ./nerd-fonts/install.sh SourceCodePro
 im-config -n fcitx
 fcitx > /dev/null 2>&1 &
+sleep 5
 rm $HOME/.config/fcitx/profile $HOME/.config/fcitx/config
 ln -s $HOME/.dotfiles/fcitx/profile $HOME/.config/fcitx/profile
 ln -s $HOME/.dotfiles/fcitx/config $HOME/.config/fcitx/config
