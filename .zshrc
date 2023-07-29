@@ -50,14 +50,11 @@ export PATH="$PATH:$HOME/.cargo/bin"
 # basex
 export PATH="$PATH:$HOME/basex/bin"
 
-
 # fcitx
 if (command -v fcitx > /dev/null) && [ $SHLVL = 1 ]; then
   export QT_IM_MODULE=fcitx
   export GTK_IM_MODULE=fcitx
   export XMODIFIERS=@im=fcitx
   export DefaultIMModule=fcitx
-  fcitx > /dev/null 2>&1 &
-  sleep 1
   fcitx-autostart > /dev/null 2>&1 &
 fi
