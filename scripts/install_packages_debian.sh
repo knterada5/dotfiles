@@ -1,5 +1,12 @@
 #!/bin/zsh
 
+if [ $# == 0 ]; then
+  FLG_PSWD=false
+else
+  FLG_PSWD=true
+  PSWD=$1
+fi
+
 # Make symbolic link
 mv $HOME/.zshrc $HOME/.zshrc_bak
 mv $HOME/.zsh_aliases $HOME/.zsh_aliases_bak
@@ -11,17 +18,22 @@ ln -s $HOME/.dotfiles/.zsh_aliases $HOME/.zsh_aliases
 DOTDIR=$(cd $(dirname $0); cd ..; pwd)
 
 # Update repositories.
-sudo -S apt update && sudo apt upgrade -y
+if "$FLG_PSWD"; then
+  echo $PSWD | sudo -S apt update && sudo apt upgrade -y
+else
+  sudo apt update && sudo apt upgrade -y
+fi
 
 # Install required packages.
 while read line; do
   if [[ ! $line =~ "#" ]] && [[ ! -z $line ]]; then
-    PACKS="$PACKS$line "
+    if "$FLG_PSWD"; then
+      echo $PSDW | sudo -S apt install -y $line
+    else
+      sudo install -y $line
+    fi
   fi
 done < $DOTDIR/data/packages
-
-CMD="sudo -S apt install -y $PACKS"
-eval $CMD
 
 # Install asdf.
 git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.11.3
@@ -34,21 +46,12 @@ zsh $DOTDIR/scripts/install_languages.sh
 git clone https://github.com/neovim/neovim
 cd neovim && make CMAKE_BUILD_TYPE=RelWithDebInfo
 git checkout stable
-sudo -S make install
+if "$FLG_PSWD"; then
+  echo $PSWD | sudo -S make install
+else
+  sudo make install
+fi
 cd $HOME
-
-# Make nvim config.
-mkdir $HOME/.config
-ln -s $HOME/.dotfiles/nvim ~/.config/nvim
-
-# Install pynvim
-cd $HOME/.config/nvim
-pip3 install --upgrade pip
-pip3 install pipenv
-python -m pipenv --python 3
-sudo -S $HOME/.config/nvim/.venv/bin/python3 -m pip install pynvim
-cd $HOME
-
 
 # Install NvChad
 git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1 && nvim
@@ -64,31 +67,30 @@ asdf reshim golang
 nvim --headless +"MasonInstallAll" +q
 
 # Remove install file.
-sudo -S rm -r $HOME/neovim
+if "$FLG_PSWD"; then
+  echo $PSWD | sudo -S rm -r $HOME/neovim
+else
+  sudo rm -r $HOME/neovim
+fi
 
 # Log of versions.
 zsh $DOTDIR/scripts/log.sh >> $HOME/.installed_versions.log
 
-
 # Install fonts
+cd $HOME
 git clone --depth 1 https://github.com/ryanoasis/nerd-fonts.git
 ./nerd-fonts/install.sh SourceCodePro
 
-
 # Setting IME
 im-config -n fcitx
-fcitx > /dev/null 2>&1 &
-sleep 5
-rm $HOME/.config/fcitx/profile $HOME/.config/fcitx/config
-ln -s $HOME/.dotfiles/fcitx/profile $HOME/.config/fcitx/profile
-ln -s $HOME/.dotfiles/fcitx/config $HOME/.config/fcitx/config
-
+source $HOME/.zshrc
+sleep 10
+rm -r $HOME/.config/fcitx
+ln -s $HOME/.dotfiles/fcitx $HOME/.config/fcitx
 
 # Set git config.
-echo -n "Enter your git user.name: "
-read USER_NAME
-echo -n "Enter your git user.email: "
-read USER_EMAIL
+read -p "Enter your git user.name:" USER_NAME
+read -p "Enter your git user.email:" USER_EMAIL
 git config --global user.name "$USER_NAME"
 git config --global user.email "$USR_EMAIL"
-cd $HOME
+exit
