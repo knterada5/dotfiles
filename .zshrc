@@ -52,7 +52,7 @@ export PATH="$PATH:$HOME/basex/bin"
 
 
 # fcitx
-if (command -v fcitx > /dev/null); then
+if (command -v fcitx > /dev/null) && [ $SHLVL = 1 ]; then
   export QT_IM_MODULE=fcitx
   export GTK_IM_MODULE=fcitx
   export XMODIFIERS=@im=fcitx
