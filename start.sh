@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ $# == 0 ]; then
+if [ $# = 0 ]; then
   read -s -p "[sudo] password for $USER:" PSWD
 else
   PSWD=$1
