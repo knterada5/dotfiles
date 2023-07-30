@@ -83,7 +83,11 @@ git clone --depth 1 https://github.com/ryanoasis/nerd-fonts.git
 
 # Setting IME
 im-config -n fcitx
-source $HOME/.zshrc
+export QT_IM_MODULE=fcitx
+export GTK_IM_MODULE=fcitx
+export XMODIFIERS=@im=fcitx
+export DefaultIMModule=fcitx
+fcitx-autostart > /dev/null 2>&1 &
 sleep 10
 rm -r $HOME/.config/fcitx
 ln -s $HOME/.dotfiles/fcitx $HOME/.config/fcitx
