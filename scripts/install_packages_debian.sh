@@ -80,4 +80,5 @@ read -p "Enter your git user.name:" USER_NAME
 read -p "Enter your git user.email:" USER_EMAIL
 git config --global user.name "$USER_NAME"
 git config --global user.email "$USR_EMAIL"
+sudo reboot
 exit
