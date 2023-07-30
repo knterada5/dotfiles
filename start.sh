@@ -17,7 +17,7 @@ case $OS in
     if [[ $DIST =~ "centos" ]] || [[ $DIST =~ "fedora" ]] || [[ $DIST =~ "red hat" ]]; then
       echo "Red Hat key"
     elif [[ $DIST =~ "debian" ]] || [[ $DIST =~ "ubuntu" ]]; then
-      . $DIR/scripts/install_zsh_debian.sh
+      . $DIR/scripts/install_zsh_debian.sh $PSWD
       zsh $DIR/scripts/install_packages_debian.sh $PSWD
       exit
     fi ;;
