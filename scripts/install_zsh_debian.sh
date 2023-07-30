@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ $# == 0 ]; then
+if [ $# = 0 ]; then
   read -s -p "[sudo] password for $USER:" PSWD
 else
   PSWD=$1
@@ -10,7 +10,6 @@ fi
 echo $PSWD | sudo -S apt update && sudo apt upgrade -y
 
 # Install zsh.
-ZSH=`which zsh`
 if (! command -v fcitx > /dev/null); then
   echo "Zsh is not installed."
   echo "Install zsh."
