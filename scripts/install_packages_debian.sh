@@ -1,9 +1,8 @@
 #!/bin/zsh
 
 if [ $# == 0 ]; then
-  FLG_PSWD=false
+  read -s -p "[sudo] password for $USER:" PSWD
 else
-  FLG_PSWD=true
   PSWD=$1
 fi
 
@@ -18,20 +17,12 @@ ln -s $HOME/.dotfiles/.zsh_aliases $HOME/.zsh_aliases
 DOTDIR=$(cd $(dirname $0); cd ..; pwd)
 
 # Update repositories.
-if "$FLG_PSWD"; then
-  echo $PSWD | sudo -S apt update && sudo apt upgrade -y
-else
-  sudo apt update && sudo apt upgrade -y
-fi
+echo $PSWD | sudo -S apt update && sudo apt upgrade -y
 
 # Install required packages.
 while read line; do
   if [[ ! $line =~ "#" ]] && [[ ! -z $line ]]; then
-    if "$FLG_PSWD"; then
-      echo $PSDW | sudo -S apt install -y $line
-    else
-      sudo install -y $line
-    fi
+    echo $PSDW | sudo -S apt install -y $line
   fi
 done < $DOTDIR/data/packages
 
@@ -46,11 +37,7 @@ zsh $DOTDIR/scripts/install_languages.sh
 git clone https://github.com/neovim/neovim
 cd neovim && make CMAKE_BUILD_TYPE=RelWithDebInfo
 git checkout stable
-if "$FLG_PSWD"; then
-  echo $PSWD | sudo -S make install
-else
-  sudo make install
-fi
+echo $PSWD | sudo -S make install
 cd $HOME
 
 # Install NvChad
@@ -67,11 +54,7 @@ asdf reshim golang
 nvim --headless +"MasonInstallAll" +q
 
 # Remove install file.
-if "$FLG_PSWD"; then
-  echo $PSWD | sudo -S rm -r $HOME/neovim
-else
-  sudo rm -r $HOME/neovim
-fi
+echo $PSWD | sudo -S rm -r $HOME/neovim
 
 # Log of versions.
 zsh $DOTDIR/scripts/log.sh >> $HOME/.installed_versions.log
