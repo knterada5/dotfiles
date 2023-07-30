@@ -11,7 +11,7 @@ echo $PSWD | sudo -S apt update && sudo apt upgrade -y
 
 # Install zsh.
 ZSH=`which zsh`
-if [[ $ZSH =~ "not found" ]] || [[ $ZSH == "" ]]; then
+if (! command -v fcitx > /dev/null); then
   echo "Zsh is not installed."
   echo "Install zsh."
   echo $PSWD | sudo -S apt install -y zsh
