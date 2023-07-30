@@ -1,5 +1,11 @@
 #!/bin/bash
 
+if [ $# == 0 ]; then
+  read -s -p "[sudo] password for $USER:" PSWD
+else
+  PSWD=$1
+fi
+
 # OS
 OS=`uname | tr A-Z a-z`
 DIR=$(cd $(dirname $0); pwd)
@@ -12,7 +18,7 @@ case $OS in
       echo "Red Hat key"
     elif [[ $DIST =~ "debian" ]] || [[ $DIST =~ "ubuntu" ]]; then
       . $DIR/scripts/install_zsh_debian.sh
-      zsh $DIR/scripts/install_packages_debian.sh
+      zsh $DIR/scripts/install_packages_debian.sh $PSWD
       exit
     fi ;;
   "darwin")
