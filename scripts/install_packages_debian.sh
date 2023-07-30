@@ -7,11 +7,11 @@ else
 fi
 
 # Make symbolic link
-mv $HOME/.zshrc $HOME/.zshrc_bak
-mv $HOME/.zsh_aliases $HOME/.zsh_aliases_bak
-ln -s $HOME/.dotfiles/.zshrc $HOME/.zshrc
-ln -s $HOME/.dotfiles/.zsh_aliases $HOME/.zsh_aliases
-. $HOME/.zshrc
+# mv $HOME/.zshrc $HOME/.zshrc_bak
+# mv $HOME/.zsh_aliases $HOME/.zsh_aliases_bak
+# ln -s $HOME/.dotfiles/.zshrc $HOME/.zshrc
+# ln -s $HOME/.dotfiles/.zsh_aliases $HOME/.zsh_aliases
+# . $HOME/.zshrc
 
 # dotfiles directory.
 DOTDIR=$(cd $(dirname $0); cd ..; pwd)
