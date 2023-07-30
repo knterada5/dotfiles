@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 if [ $# = 0 ]; then
-  read -s -p "[sudo] password for $USER:" PSWD
+  read -s "PSWD?[sudo] password for $USER:" PSWD
 else
   PSWD=$1
 fi
@@ -41,17 +41,18 @@ echo $PSWD | sudo -S make install
 cd $HOME
 
 # Install NvChad
-git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1 && nvim
+git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1 && nvim --headless +q
 rm -rf $HOME/.config/nvim/lua/custom
 ln -s $HOME/.dotfiles/custom $HOME/.config/nvim/lua/custom
+nvim --headless +q
 cd $HOME
+
+# Install LSP via Mason
+nvim --headless +"MasonInstallAll" +q
 
 # Install lazygit via go.
 go install github.com/jesseduffield/lazygit@latest
 asdf reshim golang
-
-# Install LSP via Mason
-nvim --headless +"MasonInstallAll" +q
 
 # Remove install file.
 echo $PSWD | sudo -S rm -r $HOME/neovim
@@ -76,8 +77,8 @@ rm -r $HOME/.config/fcitx
 ln -s $HOME/.dotfiles/fcitx $HOME/.config/fcitx
 
 # Set git config.
-read -p "Enter your git user.name:" USER_NAME
-read -p "Enter your git user.email:" USER_EMAIL
+read "USER_NAME?Enter your git user.name:"
+read "USER_EMAIL?Enter your git user.email:"
 git config --global user.name "$USER_NAME"
 git config --global user.email "$USR_EMAIL"
 sudo reboot
