@@ -16,7 +16,7 @@ if [[ $ZSH =~ "not found" ]] || [[ $ZSH == "" ]]; then
   echo "Install zsh."
   echo $PSWD | sudo -S apt install -y zsh
   echo "Change login shell to zsh."
-  chsh -s /bin/zsh
+  echo $PSWD | chsh -s /bin/zsh
 else
   if [[ $SHELL =~ "/zsh"$ ]]; then
     echo "Current shell is zsh."
