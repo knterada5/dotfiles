@@ -22,6 +22,6 @@ else
     echo "Current shell is zsh."
   else
     echo "Change login shell to zsh."
-    chsh -s /bin/zsh
+    echo $PSWD | chsh -s /bin/zsh
   fi
 fi
