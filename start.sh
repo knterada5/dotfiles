@@ -8,7 +8,7 @@ fi
 
 # OS
 OS=`uname | tr A-Z a-z`
-DIR=$(cd $(dirname $0); pwd)
+DIR=$(cd $(dirname ${BASH_SOURCE:-$0}); pwd)
 
 # Install zsh and packages.
 case $OS in
