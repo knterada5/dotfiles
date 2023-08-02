@@ -1,0 +1,1 @@
+@powershell -NoProfile -ExecutionPolicy unrestricted -Command "Start-Process pwsh.exe -Verb runas $env:userprofile\Desktop\winget_test.ps1"
