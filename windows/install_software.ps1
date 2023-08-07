@@ -9,6 +9,22 @@ mkdir $HOME\Documents\PowerToys\Backup
 $PT_CONF = $PSScriptRoot + "\config\PowerToys\settings_*
 Copy-Item -Path $PT_CONF -Destination "$HOME\Documents\PowerToys\Backup\" -ItemType SymbolickLink -Force
 Start-Process $HOME\AppData\Local\PowerToys\PowerToys.exe
+$wsobj = new-object -comobject wscript.shell
+$result = $wsobj.popup("[全般]→[バックアップ&復元]→[復元]", 0, "PowerToys 設定の復元")
+
+$POWERTOYS_WINDOW_TITLE = "*PowerToys*"
+Add-Type -AssemblyName UIAutomationClient
+$hwnd = (Get-Process |?{$_.MainWindowTitle -like $POWERTOYS_WINDOW_TITLE})[0].MainWindowHandle
+$window = [System.Windows.Automation.AutomationElement]::FromHandle($hwnd)
+$windowPattern=$window.GetCurrentPattern([System.Windows.Automation.WindowPattern]::Pattern)
+
+while ($true) {
+  if ($windowPattern.Current.WindowVisualState -eq 'Minimized')
+  {
+    break
+  }
+  Start-Sleep -Seconds 1
+}
 
 
 # Install cakewalk
