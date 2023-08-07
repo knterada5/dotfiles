@@ -66,10 +66,3 @@ openssl
 pkg-config
 re2c
 zlib1g-dev
-
-# for japanese font
-language-selector-common
-$(check-language-support -l ja)
-fcitx-mozc
-fonts-noto-color-emoji
-fonts-symbola
