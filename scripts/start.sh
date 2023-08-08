@@ -11,6 +11,17 @@ else
   USER_EMAIL=$3
 fi
 
+# Dotfiles directory
+DOTDIR=$(cd $(dirname $0); cd ..; pwd)
+
+function keygen () {
+  printf '\a'
+  mkdir -p $HOME/.ssh
+  cd $HOME/.ssh
+  ssh-keygen
+  cp $DOTDIR/config/ssh/config $HOME/.ssh/config
+}
+
 # OS
 OS=`uname | tr A-Z a-z`
 DIR=$(cd $(dirname ${BASH_SOURCE:-$0}); pwd)
@@ -22,9 +33,11 @@ case $OS in
     if [[ $DIST =~ "centos" ]] || [[ $DIST =~ "fedora" ]] || [[ $DIST =~ "red hat" ]]; then
       echo "Red Hat key"
     elif [[ $DIST =~ "debian" ]] || [[ $DIST =~ "ubuntu" ]]; then
+      echo $PSWD | sudo -S apt update && sudo apt upgrade -y
       . $DIR/scripts/install_zsh_debian.sh $PSWD
       . $DIR/scripts/install_fonts.sh $PSWD
       zsh $DIR/scripts/install_packages_debian.sh $PSWD $USER_NAME $USER_EMAIL
+      keygen
       exit
     fi ;;
   "darwin")
