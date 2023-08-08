@@ -149,17 +149,15 @@ cd AviUtl
 
 # Install Nerd font
 Invoke-WebRequest -Uri "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/Noto.zip" -OutFile "$HOME\Downloads\noto.zip"
-mkdir noto
-cd noto
+mkdir $HOME\Downloads\noto
+cd $HOME\Downloads\noto
 7z x $HOME\Downloads\noto.zip
-$fonts_script = $RootDir + "scripts\install_font.vbs"
+$fonts_script = $RootDir + "\scripts\install_font.vbs"
 cscript /nologo $fonts_script "$HOME\Downloads\noto\NotoMonoNerdFont-Regular.ttf"
-
 
 # Setup config for windows terminal app
 $WT_CONF = $RootDir + "\config\WindowsTerminal\settings.json"
 New-Item -Value $WT_CONF -Path "$HOME\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json" -ItemType SymbolicLink -Force
-
 
 # wsl --install
 wsl --install
