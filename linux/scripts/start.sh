@@ -1,10 +1,17 @@
 #!/bin/bash
 
 if [ $# = 0 ]; then
-  read -s -p "[sudo] password for $USER:" PSWD
-  print "\n"
-  read -p "Enter user name for git: " USER_NAME
-  read -p "Enter emai address for git: " USER_EMAIL
+  if [[ $ZSH_EVAL_CONTEXT = toplevel ]]; then
+    read -s "PSWD?[sudo] password for $USER: "
+    printf "\n"
+    read "USER_NAME?Enter user name for git: "
+    read "USER_EMAIL?Enter email address for git: "
+  else 
+    read -s -p "[sudo] password for $USER:" PSWD
+    print "\n"
+    read -p "Enter user name for git: " USER_NAME
+    read -p "Enter emai address for git: " USER_EMAIL
+  fi
 else
   PSWD=$1
   USER_NAME=$2
@@ -22,13 +29,21 @@ DIR=$(cd $(dirname ${BASH_SOURCE:-$0}); cd ..; pwd)
 # Setting ssh-key
 function keygen () {
   printf '\a'
-  read -n1 -p "Do you Set ssh-key for github? (y/N): " yn
-  printf '\n'
+  if [[ $ZSH_EVAL_CONTEXT = toplevel ]]; then
+    read -q "yn?Do you set ssh-key for github? [y/N]: "
+    printf "\n"
+  else   
+    read -n1 -p "Do you Set ssh-key for github? (y/N): " yn
+    printf '\n'
   if [[ $yn = [yY] ]]; then
     mkdir -p $HOME/.ssh
     cd $HOME/.ssh
     ssh-keygen
-    read -p "Enter your ssh-key name for github. (Default: id_rsa): " SSH_KEY
+    if [[ $ZSH_EVAL_CONTEXT = toplevel ]]; then
+      read "SSH_KEY?Enter your ssh-key name for github. (Default: id_rsa): "
+    else
+      read -p "Enter your ssh-key name for github. (Default: id_rsa): " SSH_KEY
+    fi
     cat $DIR/src/ssh/config | sed "s/ID_RSA/$SSH_KEY/" > $HOME/.ssh/config
   fi
 }

@@ -1,7 +1,12 @@
 #!/bin/bash
 
 if [ $# = 0 ]; then
-  read -s -p "[sudo] password for $USER:" PSWD
+  if [[ $ZSH_EVAL_CONTEXT = toplevel ]]; then
+    read -s "PSWD?[sudo] password for $USER: "
+  else
+    read -s -p "[sudo] password for $USER:" PSWD
+  fi
+  printf "\n"
 else
   PSWD=$1
 fi

@@ -1,7 +1,17 @@
 #!/bin/zsh
 
 if [ $# = 0 ]; then
-  read -s "PSWD?[sudo] password for $USER:" PSWD
+  if [[ $ZSH_EVAL_CONTEXT = toplevel ]]; then
+    read -s "PSWD?[sudo] password for $USER: "
+    printf "\n"
+    read "USER_NAME?Enter user name for git: "
+    read "USER_EMAIL?Enter email address for git: "
+  else 
+    read -s -p "[sudo] password for $USER:" PSWD
+    print "\n"
+    read -p "Enter user name for git: " USER_NAME
+    read -p "Enter emai address for git: " USER_EMAIL
+  fi
 else
   PSWD=$1
   USER_NAME=$2
@@ -60,6 +70,9 @@ nvim --headless +"MasonInstallAll" +q
 # Install lazygit via go.
 go install github.com/jesseduffield/lazygit@latest
 asdf reshim golang
+
+# Install dust
+cargo install du-dust
 
 # Remove install file.
 echo $PSWD | sudo -S rm -r $HOME/neovim

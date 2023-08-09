@@ -1,9 +1,16 @@
 #!/usr/bin/env bash
 
-read -s -p "[sudo] password for $USER:" PSWD
-print "\n"
-read -p "Enter user name for git: " USER_NAME
-read -p "Enter emai address for git: " USER_EMAIL
+if [[ $ZSH_EVAL_CONTEXT = toplevel ]]; then
+  read -s "PSWD?[sudo] password for $USER: "
+  printf "\n"
+  read "USER_NAME?Enter user name for git: "
+  read "USER_EMAIL?Enter email address for git: "
+else 
+  read -s -p "[sudo] password for $USER:" PSWD
+  print "\n"
+  read -p "Enter user name for git: " USER_NAME
+  read -p "Enter emai address for git: " USER_EMAIL
+fi
 
 
 echo $PSWD | sudo -S apt update && sudo apt upgrade -y

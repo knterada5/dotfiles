@@ -1,7 +1,12 @@
 #!/bin/bash
 
 if [ $# = 0 ]; then
-  read -s -p "[sudo] password for $USER:" PSWD
+  if [[ $ZSH_EVAL_CONTEXT = toplevel ]]; then
+    read -s "PSWD?[sudo] password for $USER: "
+  else
+    read -s -p "[sudo] password for $USER:" PSWD
+  fi
+  printf "\n"
 else
   PSWD=$1
 fi
@@ -16,7 +21,7 @@ echo $PSWD | sudo -S apt update && sudo apt upgrade -y
 
 
 # Install zsh.
-if (! command -v fcitx > /dev/null); then
+if (! command -v zsh > /dev/null); then
   echo "Zsh is not installed."
   echo "Install zsh."
   echo $PSWD | sudo -S apt install -y zsh
