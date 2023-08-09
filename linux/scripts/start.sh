@@ -35,6 +35,7 @@ function keygen () {
   else   
     read -n1 -p "Do you Set ssh-key for github? (y/N): " yn
     printf '\n'
+  fi
   if [[ $yn = [yY] ]]; then
     mkdir -p $HOME/.ssh
     cd $HOME/.ssh
