@@ -6,6 +6,11 @@ else
   PSWD=$1
 fi
 
+
+# Dotfile directory
+DOTDIR=$(cd $(dirname ${BASH_SOURCE:-$0}); cd ..; pwd)
+
+
 echo $PSWD | sudo -S apt install -y language-selector-common
 echo $PSWD | sudo -S apt install -y $(check-language-support -l ja)
 echo $PSWD | sudo -S apt install -y fcitx-mozc
@@ -17,5 +22,5 @@ im-config -n fcitx
 fcitx > /dev/null 2>&1 &
 sleep 5
 rm -rf $HOME/.config/fcitx
-ln -s $HOME/.dotfiles/fcitx $HOME/.config/fcitx
+ln -s $DOTDIR/src/fcitx $HOME/.config/fcitx
 

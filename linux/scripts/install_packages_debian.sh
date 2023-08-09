@@ -8,15 +8,16 @@ else
   USER_EMAIL=$3
 fi
 
+# dotfiles directory.
+DOTDIR=$(cd $(dirname ${BASH_SOURCE:-$0}); cd ..; pwd)
+
 # Make symbolic link
 mv $HOME/.zshrc $HOME/.zshrc_bak
 mv $HOME/.zsh_aliases $HOME/.zsh_aliases_bak
-ln -s $HOME/.dotfiles/.zshrc $HOME/.zshrc
-ln -s $HOME/.dotfiles/.zsh_aliases $HOME/.zsh_aliases
+ln -s $DOTDIR/src/.zshrc $HOME/.zshrc
+ln -s $DOTDIR/src/.zsh_aliases $HOME/.zsh_aliases
 . $HOME/.zshrc
 
-# dotfiles directory.
-DOTDIR=$(cd $(dirname $0); cd ..; pwd)
 
 # Update repositories.
 echo $PSWD | sudo -S apt update && sudo apt upgrade -y
@@ -49,7 +50,7 @@ cd $HOME
 # Install NvChad
 git clone https://github.com/NvChad/NvChad $HOME/.config/nvim --depth 1 && nvim --headless +q
 rm -rf $HOME/.config/nvim/lua/custom
-ln -s $HOME/.dotfiles/custom $HOME/.config/nvim/lua/custom
+ln -s $DOTDIR/src/custom $HOME/.config/nvim/lua/custom
 nvim --headless +q
 cd $HOME
 
@@ -63,5 +64,5 @@ asdf reshim golang
 # Remove install file.
 echo $PSWD | sudo -S rm -r $HOME/neovim
 
-# Log of versions.
-. $DOTDIR/scripts/log.sh >> $HOME/.installed_versions.log
+# List of packages version.
+. $DOTDIR/scripts/log.sh >> $HOME/installed_versions.log

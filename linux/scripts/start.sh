@@ -11,20 +11,28 @@ else
   USER_EMAIL=$3
 fi
 
-# Dotfiles directory
-DOTDIR=$(cd $(dirname $0); cd ..; pwd)
-
-function keygen () {
-  printf '\a'
-  mkdir -p $HOME/.ssh
-  cd $HOME/.ssh
-  ssh-keygen
-  cp $DOTDIR/config/ssh/config $HOME/.ssh/config
-}
 
 # OS
 OS=`uname | tr A-Z a-z`
-DIR=$(cd $(dirname ${BASH_SOURCE:-$0}); pwd)
+
+# Dotfile directory
+DIR=$(cd $(dirname ${BASH_SOURCE:-$0}); cd ..; pwd)
+
+
+# Setting ssh-key
+function keygen () {
+  printf '\a'
+  read -n1 -p "Do you Set ssh-key for github? (y/N): " yn
+  printf '\n'
+  if [[ $yn = [yY] ]]; then
+    mkdir -p $HOME/.ssh
+    cd $HOME/.ssh
+    ssh-keygen
+    read -p "Enter your ssh-key name for github. (Default: id_rsa): " SSH_KEY
+    cat $DIR/src/ssh/config | sed "s/ID_RSA/$SSH_KEY/" > $HOME/.ssh/config
+  fi
+}
+
 
 # Install zsh and packages.
 case $OS in

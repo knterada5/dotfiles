@@ -6,8 +6,14 @@ else
   PSWD=$1
 fi
 
+
+# Dotfile directory
+DOTDIR=$(cd $(dirname ${BASH_SOURCE:-$0}); cd ..; pwd)
+
+
 # Update repositories.
 echo $PSWD | sudo -S apt update && sudo apt upgrade -y
+
 
 # Install zsh.
 if (! command -v fcitx > /dev/null); then
@@ -28,5 +34,5 @@ fi
 # Make symbolic link
 mv $HOME/.zshrc $HOME/.zshrc_bak
 mv $HOME/.zsh_aliases $HOME/.zsh_aliases_bak
-ln -s $HOME/.dotfiles/.zshrc $HOME/.zshrc
-ln -s $HOME/.dotfiles/.zsh_aliases $HOME/.zsh_aliases
+ln -s $DOTDIR/src/.zshrc $HOME/.zshrc
+ln -s $DOTDIR/src/.dotfiles/.zsh_aliases $HOME/.zsh_aliases
