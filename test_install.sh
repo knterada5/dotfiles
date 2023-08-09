@@ -2,8 +2,8 @@
 
 read -s "PSWD?[sudo] password for $USER:"
 printf "\n"
-read "Enter user name for git: " USER_NAME
-read "Enter emai address for git: " USER_EMAIL
+read "USER_NAME?Enter user name for git: "
+read "USER_EMAIL?Enter emai address for git: "
 
 
 echo $PSWD | sudo -S apt update && sudo apt upgrade -y
