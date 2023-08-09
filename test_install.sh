@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 read -s "PSWD?[sudo] password for $USER:"
-print "\n"
+printf "\n"
 read "Enter user name for git: " USER_NAME
 read "Enter emai address for git: " USER_EMAIL
 
