@@ -54,7 +54,6 @@ cd $PSScriptRoot
 $DNS=Get-DnsClientServerAddress | Where-Object {$_.InterfaceAlias -match "イーサネット$|Wi-Fi"} | Where-Object {$_.AddressFamily -match "^2$"} | select -ExpandProperty ServerAddresses | Sort-Object | Get-Unique
 wsl --install ubuntu -n; ubuntu run "./start_wsl.sh $DNS"
 
-
 # Setting Hotkey
 mkdir "$HOME\AppData\Roaming\Microsoft\Windows\Start Menu\Shortcut"
 $WshShell = New-Object -ComObject WScript.Shell

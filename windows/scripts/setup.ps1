@@ -1,23 +1,11 @@
 $RootDir = Split-Path -Path $PSScriptRoot
 
-$defaultUserName = Read-Host "名前を入力してください"
-$UserPassword = Read-Host "パスワードを入力してください" -AsSecureString
+echo "The information below is only used once after a reboot"
+$defaultUserName = Read-Host "Enter windows account name: "
+$UserPassword = Read-Host "Enter your account password: " -AsSecureString
 $bstrUserPassword = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($UserPassword)
 $defaultPassword = [System.Runtime.InteropServices.Marshal]::PtrToStringBSTR($bstrUserPassword)
 
-# Install winget
-if (-not (gcm winget -ea SilentlyContinue)) {
-    cd $HOME\Downloads
-    Invoke-WebRequest -Uri "https://github.com/microsoft/winget-cli/releases/download/v1.5.1881/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle" -OutFile "$HOME\Downloads\winget.msixbundle"
-    # Install Microsoft.UI.Xaml.2.7
-    Invoke-WebRequest -Uri "https://www.nuget.org/api/v2/package/Microsoft.UI.Xaml/2.7.0" -OutFile "$HOME\Downloads\Microsoft.UI.Xaml.2.7.nupkg.zip"
-    Expand-Archive Microsoft.UI.Xaml.2.7.nupkg.zip
-    Add-AppxPackage .\Microsoft.UI.Xaml.2.7.nupkg\tools\AppX\x64\Release\Microsoft.UI.Xaml.2.7.appx
-    # Install VCLibs
-    Invoke-WebRequest -Uri  https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx  -OutFile "$HOME\Downloads\Microsoft.VCLibs.x64.14.00.Desktop.appx"
-    Add-AppxPackage .\Microsoft.VCLibs.x64.14.00.Desktop.appx
-    Add-appPackage -Path .\winget.msixbundle
-}
 
 # Install software via winget
 # Install sudo
@@ -64,9 +52,6 @@ winget install --id Hashicorp.Vagrant --accept-source-agreements --accept-packag
 
 # Install Minecraft
 winget install --id Mojang.MinecraftLauncher --accept-source-agreements --accept-package-agreements
-
-# Install Git
-winget install --id Git.Git --accept-source-agreements --accept-package-agreements
 
 # Install Android Studio
 winget install --id Google.AndroidStudio --accept-source-agreements --accept-package-agreements
@@ -166,14 +151,11 @@ New-Item -Value $JOYTOKEY_CONF -Path $HOME\Documents\JoyTokey -ItemType Symbolic
 wsl --install
 
 # Restart and run script after restart
-
-
 # Set Auto login
 $regLogonKey = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon"
 Set-ItemProperty -path $regLogonKey -name "AutoAdminLogon" -value 1
 Set-ItemProperty -path $regLogonKey -name "DefaultUsername" -value $defaultUserName
 Set-ItemProperty -path $regLogonKey -name "DefaultPassword" -value $defaultPassword
-
 
 # Run script after reboot
 $script = $PSScriptRoot + "\install_software.ps1"
@@ -181,7 +163,6 @@ $regRunOnceKey = "HKLM:\Software\Microsoft\Windows\CurrentVersion\RunOnce"
 $powerShell = where.exe powershell.exe
 $restartKey = "Restart-And-RunOnce"
 Set-ItemProperty -path $regRunOnceKey -name $restartKey -value "sudo pwsh -ExecutionPolicy RemoteSigned $script"
-
 
 # Reboot
 Restart-Computer -Force
