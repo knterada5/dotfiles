@@ -3,4 +3,4 @@
 
 echo "0 is $0"
 echo "$SHELL"
-echo "$SHLEVEL"
+echo "$SHLVL"

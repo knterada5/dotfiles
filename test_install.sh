@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-
+echo $SHELL
 read -s "PSWD?[sudo] password for $USER:"
 printf "\n"
 read "USER_NAME?Enter user name for git: "
