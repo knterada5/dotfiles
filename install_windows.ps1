@@ -1,3 +1,6 @@
+# Admin
+if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole("Administrators")) { Start-Process powershell.exe "-File `"$PSCommandPath`"" -Verb RunAs; exit }
+
 # Install winget
 if (-not (gcm winget -ea SilentlyContinue)) {
     cd $HOME\Downloads
@@ -16,5 +19,6 @@ if (-not (gcm winget -ea SilentlyContinue)) {
 # Install Git
 winget install --id Git.Git --accept-source-agreements --accept-package-agreements
 
+# Clone dotfiles and set up
 git clone https://github.com/knterada5/.dotfiles.git $HOME\.dotfiles
 . $HOME\.dotfiles\windows\scripts\setup.ps1
