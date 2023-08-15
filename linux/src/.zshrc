@@ -1,10 +1,14 @@
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=1000
+HISTFILESIZE=10000
+setopt appendhistory
+
 # don`t duplicate zsh history.
 setopt hist_ignore_dups
 
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTFILE=~/.zsh_history
-HISTSIZE=1000
-HISTFILESIZE=2000
+# Record start and end
+setopt EXTENDED_HISTORY
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
@@ -58,3 +62,6 @@ if (command -v fcitx > /dev/null) && [ $SHLVL = 1 ]; then
   export DefaultIMModule=fcitx
   fcitx-autostart > /dev/null 2>&1 &
 fi
+
+# Start docker
+#sudo /etc/init.d/docker start

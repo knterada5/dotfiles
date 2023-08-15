@@ -21,7 +21,7 @@ if [ $# = 0 ]; then
     PSWD_OK="$(echo $PSWD | sudo -S echo ok 2>&1 > /dev/null)"
     while [ -n "$PSWD_OK" ]; do
       echo "Sorry, try again."
-      read -s "PSWD?[sudo] password for $USER: "
+      read -s -p "[sudo] password for $USER: " PSWD
       printf '\n'
       PSWD_OK="$(echo $PSWD | sudo -S echo ok 2>&1 > /dev/null)"
       PSWD_OK="$(echo $PSWD | sudo -S echo ok 2>&1 > /dev/null)"
