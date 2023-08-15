@@ -91,6 +91,18 @@ asdf reshim golang
 # Install dust
 cargo install du-dust
 
+# Install docker
+echo $PSWD | sudo -S install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+echo $PSWD | sudo -S chmod a+r /etc/apt/keyrings/docker.gpg
+
+echo "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+echo $PSWD | sudo -S apt update
+echo $PSWD | sudo -S apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+echo $PSWD | sudo -S usermod -aG docker $USER
+
 # Remove install file.
 echo $PSWD | sudo -S rm -r $HOME/neovim
 

@@ -69,3 +69,8 @@ zlib1g-dev
 
 # basex
 basex
+
+# for docker
+ca-certificates
+curl
+gnupg
