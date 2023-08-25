@@ -1,11 +1,7 @@
+# Admin
+if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole("Administrators")) { echo "saikidou"; pwsh -NoProfile -ExecutionPolicy RemoteSigned -Command "Start-Process pwsh -Verb runas -ArgumentList '-ExecutionPolicy','RemoteSigned','$PSCommandPath'"; exit}
+
 $RootDir = Split-Path -Path $PSScriptRoot
-
-echo "The information below is only used once after a reboot"
-$defaultUserName = Read-Host "Enter windows account name: "
-$UserPassword = Read-Host "Enter your account password: " -AsSecureString
-$bstrUserPassword = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($UserPassword)
-$defaultPassword = [System.Runtime.InteropServices.Marshal]::PtrToStringBSTR($bstrUserPassword)
-
 
 # Install software via winget
 # Install sudo
@@ -47,9 +43,6 @@ winget install --id EmoteInteractive.RemoteMouse --accept-source-agreements --ac
 # Install Virtual Box
 winget install --id Oracle.VirtualBox --accept-source-agreements --accept-package-agreements
 
-# Install Vagrant
-winget install --id Hashicorp.Vagrant --accept-source-agreements --accept-package-agreements
-
 # Install Minecraft
 winget install --id Mojang.MinecraftLauncher --accept-source-agreements --accept-package-agreements
 
@@ -85,6 +78,9 @@ winget install --id Microsoft.PowerToys --accept-source-agreements --accept-pack
 
 # Install neovim
 winget install --id Neovim.Neovim --accept-source-agreements --accept-package-agreements
+
+# Install python 3.10.6 for Stable Diffusion
+winget install --id Python.Python.3.10 --version 3.10.6
 
 # Setting Path
 $7Z = ";" + $env:Programfiles + "\7-Zip\"
@@ -147,22 +143,45 @@ New-Item -Value $WT_CONF -Path "$HOME\AppData\Local\Packages\Microsoft.WindowsTe
 $JOYTOKEY_CONF = $RootDir + "\config\JoyToky"
 New-Item -Value $JOYTOKEY_CONF -Path $HOME\Documents\JoyTokey -ItemType SymbolicLink -Force
 
+# Reload environment variable
+$env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
+
+# Install VSCode extensions
+$VSCode_ext = $RootDir + "\config\VSCode\extensions.json"
+$VSCode_settings = $RootDir + "\config\VSCode\settings.json"
+rm $HOME\.vscode\extensions\ -Recurse
+New-Item -Value $VSCode_ext -Path $HOME\.vscode\extensions\extensions.json -ItemType SymbolicLink -Force
+New-Item -Value $VSCode_settings -Path $HOME\AppData\Roaming\Code\User\settings.json -ItemType SymbolicLink -Force
+sls '"identifier":{"id":".*?"' .\extensions.json -AllMatches | % {$_.Matches.Value} | % {$_ -replace '"identifier":{"id":"', ''} | % {$_ -replace '"', ''} | % {code --install-extension $_}
+
+# Install Stable Diffusion
+git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git $HOME\StableDiffusion
+python -m pip install --upgrade pip
+pip install xformers
+$AutoLaunch = (gc $HOME\StableDiffusion\webui-user.bat) -replace "set COMMANDLINE_ARGS=", "set COMMANDLINE_ARGS=--autolaunch --medvram --xformers`r`n`r`n cd %~dp0"
+$AutoLaunch > $HOME\StableDiffusion\webui-user.bat
+cd $HOME\StableDiffusion
+$ SD = Start-Process -FilePath "$HOME\StableDiffusion\webui-user.bat" -PassThru
+while (true) {
+  if (Get-Process | Where-Object {$_.MainWindowTitle -like "*Stable Diffusion*"}) {
+    Get-Process | Where-Object {$_.MainWindowTitle -like "*Stable Diffusion*"} | Stop-Process
+    Stop-Process $SD.Id
+    break
+  }
+  Start-Process -Seconds 30
+}
+
+
 # wsl --install
-wsl --install
+wsl --install -n
 
 # Restart and run script after restart
-# Set Auto login
-$regLogonKey = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon"
-Set-ItemProperty -path $regLogonKey -name "AutoAdminLogon" -value 1
-Set-ItemProperty -path $regLogonKey -name "DefaultUsername" -value $defaultUserName
-Set-ItemProperty -path $regLogonKey -name "DefaultPassword" -value $defaultPassword
 
 # Run script after reboot
 $script = $PSScriptRoot + "\install_software.ps1"
 $regRunOnceKey = "HKLM:\Software\Microsoft\Windows\CurrentVersion\RunOnce"
-$powerShell = where.exe powershell.exe
 $restartKey = "Restart-And-RunOnce"
-Set-ItemProperty -path $regRunOnceKey -name $restartKey -value "sudo pwsh -ExecutionPolicy RemoteSigned $script"
+Set-ItemProperty -path $regRunOnceKey -name $restartKey -value "pwsh -NoProfile -ExecutionPolicy RemoteSigned -Command `"Start-Process pwsh -Verb runas -ArgumentList '-ExecutionPolicy','RemoteSigned','$script'`""
 
 # Reboot
 Restart-Computer -Force
