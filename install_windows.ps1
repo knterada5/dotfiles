@@ -1,24 +1,55 @@
 # Admin
-if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole("Administrators")) { Start-Process powershell.exe "-File `"$PSCommandPath`"" -Verb RunAs; exit }
+if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole("Administrators")) { echo "hajimaruyo"; powershell -NoProfile -ExecutionPolicy RemoteSigned -Command "Start-Process powershell -Verb runas -ArgumentList '-ExecutionPolicy','RemoteSigned','$PSCommandPath'"; exit}
+
+
+# Set Auto login
+echo "The information below is only used once after a reboot"
+$defaultUserName = Read-Host "Enter windows account name: "
+$UserPassword = Read-Host "Enter your account password: " -AsSecureString
+$bstrUserPassword = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($UserPassword)
+$defaultPassword = [System.Runtime.InteropServices.Marshal]::PtrToStringBSTR($bstrUserPassword)
+
+$regLogonKey = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon"
+Set-ItemProperty -path $regLogonKey -name "AutoAdminLogon" -value 1
+Set-ItemProperty -path $regLogonKey -name "DefaultUsername" -value $defaultUserName
+Set-ItemProperty -path $regLogonKey -name "DefaultPassword" -value $defaultPassword
+
 
 # Install winget
+$OS_Ver = (Get-WmiObject Win32_OperatingSystem).Version | % { $_ -creplace "^.*\.", "" }
 if (-not (gcm winget -ea SilentlyContinue)) {
-    cd $HOME\Downloads
-    Invoke-WebRequest -Uri "https://github.com/microsoft/winget-cli/releases/download/v1.5.1881/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle" -OutFile "$HOME\Downloads\winget.msixbundle"
-    # Install Microsoft.UI.Xaml.2.7
-    Invoke-WebRequest -Uri "https://www.nuget.org/api/v2/package/Microsoft.UI.Xaml/2.7.0" -OutFile "$HOME\Downloads\Microsoft.UI.Xaml.2.7.nupkg.zip"
-    Expand-Archive Microsoft.UI.Xaml.2.7.nupkg.zip
-    Add-AppxPackage .\Microsoft.UI.Xaml.2.7.nupkg\tools\AppX\x64\Release\Microsoft.UI.Xaml.2.7.appx
-    # Install VCLibs
-    Invoke-WebRequest -Uri  https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx  -OutFile "$HOME\Downloads\Microsoft.VCLibs.x64.14.00.Desktop.appx"
-    Add-AppxPackage .\Microsoft.VCLibs.x64.14.00.Desktop.appx
-    Add-appPackage -Path .\winget.msixbundle
+  if ($OS_Ver -ge 16299) {
+    echo "Install winget."
+    Add-AppxPackage -RegisterByFamilyName -MainPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe 
+  }
+  else {
+    echo "Your machine is lower than Windows 10 1709."
+    echo "Exit."
+    pause
+    exit
+  }
+}
+
+If (-not (gcm winget -ea SilentlyContinue)) {
+  echo "Failed install winget."
+  echo "Exit."
+  pause
+  exit
+}
+
+
+# Install pwsh
+if (-not (gcm pwsh -ea SilentlyContinue)) {
+  echo "Install pwsh."
+  winget install --id Microsoft.PowerShell --accept-source-agreements --accept-package-agreements
 }
 
 
 # Install Git
+echo "Install Git."
 winget install --id Git.Git --accept-source-agreements --accept-package-agreements
+
 
 # Clone dotfiles and set up
 git clone https://github.com/knterada5/.dotfiles.git $HOME\.dotfiles
-. $HOME\.dotfiles\windows\scripts\setup.ps1
+pwsh $HOME\.dotfiles\windows\scripts/setup.ps1
