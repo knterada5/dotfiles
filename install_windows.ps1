@@ -49,6 +49,8 @@ if (-not (gcm pwsh -ea SilentlyContinue)) {
 echo "Install Git."
 winget install --id Git.Git --accept-source-agreements --accept-package-agreements
 
+# Reload environment variable
+$env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
 
 # Clone dotfiles and set up
 git clone https://github.com/knterada5/.dotfiles.git $HOME\.dotfiles
