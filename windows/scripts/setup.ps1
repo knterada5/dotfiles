@@ -178,7 +178,7 @@ wsl --install -n
 # Restart and run script after restart
 
 # Run script after reboot
-$script = $PSScriptRoot + "\install_software.ps1"
+$script = $PSScriptRoot + "\scripts\install_software.ps1"
 $regRunOnceKey = "HKLM:\Software\Microsoft\Windows\CurrentVersion\RunOnce"
 $restartKey = "Restart-And-RunOnce"
 Set-ItemProperty -path $regRunOnceKey -name $restartKey -value "pwsh -NoProfile -ExecutionPolicy RemoteSigned -Command `"Start-Process pwsh -Verb runas -ArgumentList '-ExecutionPolicy','RemoteSigned','$script'`""
