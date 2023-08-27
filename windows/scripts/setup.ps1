@@ -13,9 +13,6 @@ winget install --id 9PB2MZ1ZMB1S --accept-source-agreements --accept-package-agr
 # Install LINE
 winget install --id XPFCC4CD725961 --accept-source-agreements --accept-package-agreements
 
-# Install PowerShell
-winget install --id 9MZ1SNWT0N5D --accept-source-agreements --accept-package-agreements
-
 # Install Wireless Adapter
 winget install --id 9WZDNCRFJBB1 --accept-source-agreements --accept-package-agreements
 
