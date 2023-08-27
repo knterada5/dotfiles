@@ -167,7 +167,7 @@ pip install xformers
 $AutoLaunch = (gc $HOME\StableDiffusion\webui-user.bat) -replace "set COMMANDLINE_ARGS=", "set COMMANDLINE_ARGS=--autolaunch --medvram --xformers`r`n`r`n cd %~dp0"
 $AutoLaunch > $HOME\StableDiffusion\webui-user.bat
 cd $HOME\StableDiffusion
-$ SD = Start-Process -FilePath "$HOME\StableDiffusion\webui-user.bat" -PassThru
+$SD = Start-Process -FilePath "$HOME\StableDiffusion\webui-user.bat" -PassThru
 while (true) {
   if (Get-Process | Where-Object {$_.MainWindowTitle -like "*Stable Diffusion*"}) {
     Get-Process | Where-Object {$_.MainWindowTitle -like "*Stable Diffusion*"} | Stop-Process
