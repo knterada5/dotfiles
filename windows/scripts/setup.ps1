@@ -89,6 +89,11 @@ $PATH = $ENV:Path + $7Z + $py
 [System.Environment]::SetEnvironmentVariable("Path", $PATH, "User")
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
 
+# Setting alias python
+rm $HOME\AppData\Local\Microsoft\WindowsApps\python.exe
+if (-not (Test-Path $PROFILE)) {New-Item $PROFILE -Type File -Force}
+Add-Content $PROFILE "Set-Alias -Name python -Value py"
+
 # Download exe file and quiet install
 # Download BandLab
 Start-Process vivaldi https://www.bandlab.com/products/desktop/assistant/download/windows
