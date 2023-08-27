@@ -96,11 +96,11 @@ Add-Content $PROFILE "Set-Alias -Name python -Value py"
 
 # Download exe file and quiet install
 # Download BandLab
-Start-Process vivaldi https://www.bandlab.com/products/desktop/assistant/download/windows
+Start-Process msedge https://www.bandlab.com/products/desktop/assistant/download/windows
+Start-Sleep -Seconds 1
 # Minimize vivalde
-$MAIN_WINDOW_TITLE = "*Vivaldi*"
 Add-Type -AssemblyName UIAutomationClient
-$hwnd = (Get-Process |?{$_.MainWindowTitle -like $MAIN_WINDOW_TITLE})[0].MainWindowHandle
+$hwnd = (Get-Process | Where-Object {$_.MainWindowTitle -ne "" -and $_.ProcessName -like "*msedge*"}).MainWIndowHandle
 $window = [System.Windows.Automation.AutomationElement]::FromHandle($hwnd)
 $windowPattern=$window.GetCurrentPattern([System.Windows.Automation.WindowPattern]::Pattern)
 $windowPattern.SetWindowVisualState([System.Windows.Automation.WindowVisualState]::Minimized)
