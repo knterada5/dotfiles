@@ -76,13 +76,16 @@ winget install --id Microsoft.PowerToys --accept-source-agreements --accept-pack
 # Install neovim
 winget install --id Neovim.Neovim --accept-source-agreements --accept-package-agreements
 
+# Install py launcher
+
+
 # Install python 3.10.6 for Stable Diffusion
 winget install --id Python.Python.3.10 --version 3.10.6
 
 # Setting Path
 $7Z = ";" + $env:Programfiles + "\7-Zip\"
-$py = ";" + $HOME + "\AppData\Local\Programs\Python\Python310\python.exe"
-$PATH = $ENV:Path + $7Z + $py
+$code = ";" + $HOME + "\AppData\Local\Programs\Microsoft VS Code\"
+$PATH = $ENV:Path + $7Z + $code
 [System.Environment]::SetEnvironmentVariable("Path", $PATH, "User")
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
 
