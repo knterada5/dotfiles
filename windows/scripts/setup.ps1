@@ -84,7 +84,8 @@ winget install --id Python.Python.3.10 --version 3.10.6
 
 # Setting Path
 $7Z = ";" + $env:Programfiles + "\7-Zip\"
-$PATH = $ENV:Path + $7Z
+$py = ";" + $HOME + "\AppData\Local\Programs\Python\Python310\python.exe"
+$PATH = $ENV:Path + $7Z + $py
 [System.Environment]::SetEnvironmentVariable("Path", $PATH, "User")
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
 
