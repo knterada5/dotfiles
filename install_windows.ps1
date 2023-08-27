@@ -1,9 +1,9 @@
 # Admin
-if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole("Administrators")) { echo "hajimaruyo"; powershell -NoProfile -ExecutionPolicy RemoteSigned -Command "Start-Process powershell -Verb runas -ArgumentList '-ExecutionPolicy','RemoteSigned','$PSCommandPath'"; exit}
+if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole("Administrators")) { powershell -NoProfile -ExecutionPolicy RemoteSigned -Command "Start-Process powershell -Verb runas -ArgumentList '-ExecutionPolicy','RemoteSigned','$PSCommandPath'"; exit}
 
 
 # Set Auto login
-echo "The information below is only used once after a reboot"
+echo "The information below is only used for login to reboot"
 $defaultUserName = Read-Host "Enter windows account name: "
 $UserPassword = Read-Host "Enter your account password: " -AsSecureString
 $bstrUserPassword = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($UserPassword)
