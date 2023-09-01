@@ -168,6 +168,8 @@ python -m pip install --upgrade pip
 cd $HOME\StableDiffusion
 python -m venv venv
 pip install xformers
+$py = (gc $HOME\StableDiffusion\webui-user.bat) -replace "set PYTHON=", "set PYTHON=$HOME\StableDiffusion\venv\Scripts\python.exe"
+$py > $HOME\StableDiffusion\webui-user.bat
 $AutoLaunch = (gc $HOME\StableDiffusion\webui-user.bat) -replace "set COMMANDLINE_ARGS=", "set COMMANDLINE_ARGS=--autolaunch --medvram --xformers`r`n`r`n cd %~dp0"
 $AutoLaunch > $HOME\StableDiffusion\webui-user.bat
 cd $HOME\StableDiffusion
