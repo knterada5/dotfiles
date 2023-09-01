@@ -73,21 +73,14 @@ winget install --id Microsoft.WindowsTerminal --accept-source-agreements --accep
 # Install PowerToys
 winget install --id Microsoft.PowerToys --accept-source-agreements --accept-package-agreements
 
-# Install neovim
-winget install --id Neovim.Neovim --accept-source-agreements --accept-package-agreements
-
-# Install pyenv-win
-Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/pyenv-win/pyenv-win/master/pyenv-win/install-pyenv-win.ps1" -OutFile "./install-pyenv-win.ps1"; &"./install-pyenv-win.ps1"
-$env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
-
 # Install python 3.10.6 for Stable Diffusion
-pyenv install 3.10.6
-pyenv global 3.10.6
+winget install --id Python.Python.3.10 --version 3.10.6 --accept-source-agreements --accept-package-agreements
 
 # Setting Path
 $7Z = ";" + $env:Programfiles + "\7-Zip\"
 $code = ";" + $HOME + "\AppData\Local\Programs\Microsoft VS Code\"
-$PATH = $ENV:Path + $7Z + $code
+$py = ";" + $HOME + "\AppData\Local\Programs\Python\Python310"
+$PATH = $ENV:Path + $7Z + $code + $py
 [System.Environment]::SetEnvironmentVariable("Path", $PATH, "User")
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
 
