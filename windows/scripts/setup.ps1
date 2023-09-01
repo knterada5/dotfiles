@@ -182,7 +182,7 @@ cd $PSScriptRoot
 
 # Restart and run script after restart
 # Run script after reboot
-$script = $RootDir + "\scripts\install_software.ps1"
+$script = $RootDir + "\scripts\after_reboot.ps1"
 $pwsh = (gcm pwsh).Source
 $regRunOnceKey = "HKLM:\Software\Microsoft\Windows\CurrentVersion\RunOnce"
 $restartKey = "Restart-And-RunOnce"
