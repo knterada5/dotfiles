@@ -76,11 +76,13 @@ winget install --id Microsoft.PowerToys --accept-source-agreements --accept-pack
 # Install neovim
 winget install --id Neovim.Neovim --accept-source-agreements --accept-package-agreements
 
-# Install py launcher
-
+# Install pyenv-win
+Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/pyenv-win/pyenv-win/master/pyenv-win/install-pyenv-win.ps1" -OutFile "./install-pyenv-win.ps1"; &"./install-pyenv-win.ps1"
+$env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
 
 # Install python 3.10.6 for Stable Diffusion
-winget install --id Python.Python.3.10 --version 3.10.6
+pyenv install 3.10.6
+pyenv global 3.10.6
 
 # Setting Path
 $7Z = ";" + $env:Programfiles + "\7-Zip\"
@@ -163,6 +165,8 @@ sls '"identifier":{"id":".*?"' .\extensions.json -AllMatches | % {$_.Matches.Val
 # Install Stable Diffusion
 git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git $HOME\StableDiffusion
 python -m pip install --upgrade pip
+cd $HOME\StableDiffusion
+python -m venv venv
 pip install xformers
 $AutoLaunch = (gc $HOME\StableDiffusion\webui-user.bat) -replace "set COMMANDLINE_ARGS=", "set COMMANDLINE_ARGS=--autolaunch --medvram --xformers`r`n`r`n cd %~dp0"
 $AutoLaunch > $HOME\StableDiffusion\webui-user.bat
