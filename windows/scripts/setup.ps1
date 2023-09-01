@@ -190,7 +190,7 @@ wsl --install -n
 # Restart and run script after restart
 
 # Run script after reboot
-$script = $PSScriptRoot + "\scripts\install_software.ps1"
+$script = $RootDir + "\scripts\install_software.ps1"
 $pwsh = (gcm pwsh).Source
 $regRunOnceKey = "HKLM:\Software\Microsoft\Windows\CurrentVersion\RunOnce"
 $restartKey = "Restart-And-RunOnce"
