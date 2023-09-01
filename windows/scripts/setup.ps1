@@ -167,7 +167,7 @@ git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git $HOME\Stab
 python -m pip install --upgrade pip
 cd $HOME\StableDiffusion
 python -m venv venv
-pip install xformers
+$HOME\StableDiffusion\venv\Scripts\pip.exe install xformers
 $py = (gc $HOME\StableDiffusion\webui-user.bat) -replace "set PYTHON=", "set PYTHON=$HOME\StableDiffusion\venv\Scripts\python.exe"
 $py > $HOME\StableDiffusion\webui-user.bat
 $AutoLaunch = (gc $HOME\StableDiffusion\webui-user.bat) -replace "set COMMANDLINE_ARGS=", "set COMMANDLINE_ARGS=--autolaunch --medvram --xformers`r`n`r`n cd %~dp0"
