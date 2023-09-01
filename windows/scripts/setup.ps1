@@ -158,22 +158,17 @@ sls '"identifier":{"id":".*?"' .\extensions.json -AllMatches | % {$_.Matches.Val
 # Install Stable Diffusion
 git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git $HOME\StableDiffusion
 python -m pip install --upgrade pip
-cd $HOME\StableDiffusion
-python -m venv venv
-$HOME\StableDiffusion\venv\Scripts\pip.exe install xformers
-$py = (gc $HOME\StableDiffusion\webui-user.bat) -replace "set PYTHON=", "set PYTHON=$HOME\StableDiffusion\venv\Scripts\python.exe"
-$py > $HOME\StableDiffusion\webui-user.bat
-$AutoLaunch = (gc $HOME\StableDiffusion\webui-user.bat) -replace "set COMMANDLINE_ARGS=", "set COMMANDLINE_ARGS=--autolaunch --medvram --xformers`r`n`r`n cd %~dp0"
+$AutoLaunch = (gc $HOME\StableDiffusion\webui-user.bat) -replace "set COMMANDLINE_ARGS=", "set COMMANDLINE_ARGS=--autolaunch --medvram --xformers`r`n`r`ncd %~dp0"
 $AutoLaunch > $HOME\StableDiffusion\webui-user.bat
 cd $HOME\StableDiffusion
 $SD = Start-Process -FilePath "$HOME\StableDiffusion\webui-user.bat" -PassThru
-while (true) {
+while ($true) {
   if (Get-Process | Where-Object {$_.MainWindowTitle -like "*Stable Diffusion*"}) {
     Get-Process | Where-Object {$_.MainWindowTitle -like "*Stable Diffusion*"} | Stop-Process
     Stop-Process $SD.Id
     break
   }
-  Start-Process -Seconds 30
+  Start-Sleep -Seconds 30
 }
 
 
@@ -182,9 +177,10 @@ wsl --install -n
 
 # Registry
 cd $PSScriptRoot
-. .\jikko.ps1
-# Restart and run script after restart
+. .\regset.ps1
 
+
+# Restart and run script after restart
 # Run script after reboot
 $script = $RootDir + "\scripts\install_software.ps1"
 $pwsh = (gcm pwsh).Source
