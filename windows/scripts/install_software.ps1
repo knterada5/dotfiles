@@ -1,8 +1,4 @@
-# Admin
-if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole("Administrators")) { echo "saikidou"; pwsh -NoProfile -ExecutionPolicy RemoteSigned -Command "Start-Process pwsh -Verb runas -ArgumentList '-ExecutionPolicy','RemoteSigned','$PSCommandPath'"; exit}
-
 $RootDir = Split-Path -Path $PSScriptRoot
-
 
 # Set auto login false
 $regLogonKey = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon"
@@ -13,8 +9,9 @@ Set-ItemProperty -path $regLogonKey -name "DefaultPassword" -value ""
 
 # Restore PowerToys settings
 mkdir $HOME\Documents\PowerToys\Backup
-$PT_CONF = $RootDir + "\config\PowerToys\settings_*
-New-Item -Value $PT_CONF -Path "$HOME\Documents\PowerToys\Backup\" -ItemType SymbolickLink -Force
+$PT_CONF = $RootDir + "\config\PowerToys\settings_*"
+Write-Host $PT_CONF
+Copy-Item $PT_CONF -Destination "$HOME\Documents\PowerToys\Backup"
 Start-Process $HOME\AppData\Local\PowerToys\PowerToys.exe
 $wsobj = new-object -comobject wscript.shell
 $result = $wsobj.popup("[全般]→[バックアップ&復元]→[復元]", 0, "PowerToys 設定の復元")
@@ -53,14 +50,15 @@ while ($true) {
   Start-Sleep -Seconds 5
 }
 
+
 # Setup Ubuntu on wsl
 cd $PSScriptRoot
 $DNS=Get-DnsClientServerAddress | Where-Object {$_.InterfaceAlias -match "イーサネット$|Wi-Fi"} | Where-Object {$_.AddressFamily -match "^2$"} | select -ExpandProperty ServerAddresses | Sort-Object | Get-Unique
-wsl --install ubuntu -n; ubuntu run "./start_wsl.sh $DNS"
+wsl --install -d ubuntu -n; ubuntu run "./start_wsl.sh $DNS"
 
 # Setting Hotkey
-$WshShell = New-Object -ComObject WScript.Shell
-$SD_Shc = $Wsshell.CreateShortcut('AppData\Roaming\Microsoft\Windows\Start Menu\StableDiffusion.lnk')
+$WsShell = New-Object -ComObject WScript.Shell
+$SD_Shc = $WsShell.CreateShortcut('AppData\Roaming\Microsoft\Windows\Start Menu\StableDiffusion.lnk')
 $SD_Shc.TargetPath = "$HOME\StableDiffusion\webui-user.bat"
 $SD_Shc.Save()
 
@@ -74,4 +72,3 @@ $Pwsh_Shc = $WsShell.CreateShortcut('AppData\Roaming\Microsoft\Windows\Start Men
 $Pwsh_Shc.TargetPath = "pwsh"
 $Pwsh_Shc.Hotkey = "ALT+CTRL+P"
 $Pwsh_Shc.Save()
-pause
