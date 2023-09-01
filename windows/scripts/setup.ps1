@@ -187,6 +187,9 @@ while (true) {
 # wsl --install
 wsl --install -n
 
+# Registry
+cd $PSScriptRoot
+. .\jikko.ps1
 # Restart and run script after restart
 
 # Run script after reboot
