@@ -7,19 +7,6 @@ $RootDir = Split-Path -Path $PSScriptRoot
 cd $PSScriptRoot
 . .\winget.ps1
 
-# Setting Path
-$7Z = ";" + $env:Programfiles + "\7-Zip\"
-$code = ";" + $HOME + "\AppData\Local\Programs\Microsoft VS Code\"
-$py = ";" + $HOME + "\AppData\Local\Programs\Python\Python310"
-$PATH = $ENV:Path + $7Z + $code + $py
-[System.Environment]::SetEnvironmentVariable("Path", $PATH, "User")
-$env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
-
-# Setting alias python
-rm $HOME\AppData\Local\Microsoft\WindowsApps\python.exe
-if (-not (Test-Path $PROFILE)) {New-Item $PROFILE -Type File -Force}
-Add-Content $PROFILE "Set-Alias -Name python -Value py"
-
 # Download exe file and quiet install
 # Download BandLab
 Start-Process msedge https://www.bandlab.com/products/desktop/assistant/download/windows
