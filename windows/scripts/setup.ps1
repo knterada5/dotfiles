@@ -3,11 +3,27 @@ if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 
 $RootDir = Split-Path -Path $PSScriptRoot
 
+
 # Install software via winget
 cd $PSScriptRoot
 . .\winget.ps1
 
-# Download exe file and quiet install
+# Install Stable Diffusion
+git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git $HOME\StableDiffusion
+python -m pip install --upgrade pip
+$AutoLaunch = (gc $HOME\StableDiffusion\webui-user.bat) -replace "set COMMANDLINE_ARGS=", "set COMMANDLINE_ARGS=--autolaunch --medvram --xformers`r`n`r`ncd %~dp0"
+$AutoLaunch > $HOME\StableDiffusion\webui-user.bat
+cd $HOME\StableDiffusion
+$SD = Start-Process -FilePath "$HOME\StableDiffusion\webui-user.bat" -PassThru
+while ($true) {
+  if (Get-Process | Where-Object {$_.MainWindowTitle -like "*Stable Diffusion*"}) {
+    Get-Process | Where-Object {$_.MainWindowTitle -like "*Stable Diffusion*"} | Stop-Process
+    Stop-Process $SD.Id
+    break
+  }
+  Start-Sleep -Seconds 30
+}
+
 # Download BandLab
 Start-Process msedge https://www.bandlab.com/products/desktop/assistant/download/windows
 Start-Sleep -Seconds 1
@@ -54,6 +70,8 @@ Invoke-WebRequest -Uri "https://github.com/ryanoasis/nerd-fonts/releases/downloa
 $fonts_script = $RootDir + "\scripts\install_font.vbs"
 cscript /nologo $fonts_script "$HOME\Downloads\noto\NotoMonoNerdFont-Regular.ttf"
 
+
+# Set up Config
 # Setup config for windows terminal app
 $WT_CONF = $RootDir + "\config\WindowsTerminal\settings.json"
 New-Item -Value $WT_CONF -Path "$HOME\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json" -ItemType SymbolicLink -Force
@@ -62,10 +80,7 @@ New-Item -Value $WT_CONF -Path "$HOME\AppData\Local\Packages\Microsoft.WindowsTe
 $JOYTOKEY_CONF = $RootDir + "\config\JoyToky"
 New-Item -Value $JOYTOKEY_CONF -Path $HOME\Documents\JoyTokey -ItemType SymbolicLink -Force
 
-# Reload environment variable
-$env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
-
-# Install VSCode extensions
+# Install VSCode extensions and set up config
 $VSCode_ext = $RootDir + "\config\VSCode\extensions.json"
 $VSCode_settings = $RootDir + "\config\VSCode\settings.json"
 rm $HOME\.vscode\extensions\ -Recurse
@@ -73,38 +88,20 @@ New-Item -Value $VSCode_ext -Path $HOME\.vscode\extensions\extensions.json -Item
 New-Item -Value $VSCode_settings -Path $HOME\AppData\Roaming\Code\User\settings.json -ItemType SymbolicLink -Force
 sls '"identifier":{"id":".*?"' .\extensions.json -AllMatches | % {$_.Matches.Value} | % {$_ -replace '"identifier":{"id":"', ''} | % {$_ -replace '"', ''} | % {code --install-extension $_}
 
-# Install Stable Diffusion
-git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git $HOME\StableDiffusion
-python -m pip install --upgrade pip
-$AutoLaunch = (gc $HOME\StableDiffusion\webui-user.bat) -replace "set COMMANDLINE_ARGS=", "set COMMANDLINE_ARGS=--autolaunch --medvram --xformers`r`n`r`ncd %~dp0"
-$AutoLaunch > $HOME\StableDiffusion\webui-user.bat
-cd $HOME\StableDiffusion
-$SD = Start-Process -FilePath "$HOME\StableDiffusion\webui-user.bat" -PassThru
-while ($true) {
-  if (Get-Process | Where-Object {$_.MainWindowTitle -like "*Stable Diffusion*"}) {
-    Get-Process | Where-Object {$_.MainWindowTitle -like "*Stable Diffusion*"} | Stop-Process
-    Stop-Process $SD.Id
-    break
-  }
-  Start-Sleep -Seconds 30
-}
-
 
 # wsl --install
 wsl --install -n
 
-# Registry
+
+# Change Registry
 cd $PSScriptRoot
 . .\regset.ps1
 
 
 # Restart and run script after restart
-# Run script after reboot
 $script = $RootDir + "\scripts\after_reboot.ps1"
 $pwsh = (gcm pwsh).Source
 $regRunOnceKey = "HKLM:\Software\Microsoft\Windows\CurrentVersion\RunOnce"
 $restartKey = "Restart-And-RunOnce"
 Set-ItemProperty -path $regRunOnceKey -name $restartKey -value "$pwsh -ExecutionPolicy RemoteSigned $script"
-
-# Reboot
 Restart-Computer -Force
