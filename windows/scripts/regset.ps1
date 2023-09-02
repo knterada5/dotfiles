@@ -82,10 +82,18 @@ RegSet "HKCU:\Software\Microsoft\Windows\CurrentVersion\Start" "ShowRecentList" 
 
 # Hide Recommendations
 RegSet "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "Start_IrisRecommendations" 'DWord' 0
+
+# Hide Recent files
 RegSet "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "Start_TrackDocs" 'DWord' 0
+
+# Remove Icons from start menu
 RegSet "HKCU:\Software\Microsoft\Windows\CurrentVersion\Start" "VisiblePlaces" 'DWord' 0
+
+# Set Wallpaper Black solid color
 RegSet "HKCU:\Control Panel\Desktop" "ImageColor" 'DWord' 3305111551
 RegSet "HKCU:\Control Panel\Desktop" "WallPaper" 'String' ""
 RegSet "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Wallpapers" "BackgroundType" 'DWord' 1
+
+# Enable Dark Mode
 RegSet "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" "SystemUsesLightTheme" 'DWord' 0
 RegSet "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" "AppsUseLightTheme" 'DWord' 0
