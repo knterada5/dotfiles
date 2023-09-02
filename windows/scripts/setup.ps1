@@ -91,11 +91,9 @@ New-Item -Value $VSCode_ext -Path $HOME\.vscode\extensions\extensions.json -Item
 New-Item -Value $VSCode_settings -Path $HOME\AppData\Roaming\Code\User\settings.json -ItemType SymbolicLink -Force
 sls '"identifier":{"id":".*?"' .\extensions.json -AllMatches | % {$_.Matches.Value} | % {$_ -replace '"identifier":{"id":"', ''} | % {$_ -replace '"', ''} | % {code --install-extension $_}
 
-
 # Change Registry
 cd $PSScriptRoot
 . .\regset.ps1
-
 
 # Restart and run script after restart
 $script = $RootDir + "\scripts\after_reboot.ps1"
