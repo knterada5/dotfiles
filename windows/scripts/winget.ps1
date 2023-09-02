@@ -57,9 +57,6 @@ winget install --id BlenderFoundation.Blender --accept-source-agreements --accep
 # Install Google Chrome
 winget install --id Google.Chrome --accept-source-agreements --accept-package-agreements
 
-# Install Vivaldi
-winget install --id VivaldiTechnologies.Vivaldi --accept-source-agreements --accept-package-agreements
-
 # Install VSCode
 winget install --id Microsoft.VisualStudioCode --accept-source-agreements --accept-package-agreements
 
