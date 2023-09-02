@@ -80,3 +80,6 @@ $py = ";" + $HOME + "\AppData\Local\Programs\Python\Python310"
 $PATH = $ENV:Path + $7Z + $code + $py
 [System.Environment]::SetEnvironmentVariable("Path", $PATH, "User")
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+
+# Remove default python.exe
+rm $HOME\AppData\Local\Microsoft\WindowsApps\python.exe
