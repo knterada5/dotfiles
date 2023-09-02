@@ -24,6 +24,9 @@ while ($true) {
   Start-Sleep -Seconds 30
 }
 
+# wsl --install
+wsl --install -n
+
 # Download BandLab
 Start-Process msedge https://www.bandlab.com/products/desktop/assistant/download/windows
 Start-Sleep -Seconds 1
@@ -87,10 +90,6 @@ rm $HOME\.vscode\extensions\ -Recurse
 New-Item -Value $VSCode_ext -Path $HOME\.vscode\extensions\extensions.json -ItemType SymbolicLink -Force
 New-Item -Value $VSCode_settings -Path $HOME\AppData\Roaming\Code\User\settings.json -ItemType SymbolicLink -Force
 sls '"identifier":{"id":".*?"' .\extensions.json -AllMatches | % {$_.Matches.Value} | % {$_ -replace '"identifier":{"id":"', ''} | % {$_ -replace '"', ''} | % {code --install-extension $_}
-
-
-# wsl --install
-wsl --install -n
 
 
 # Change Registry
