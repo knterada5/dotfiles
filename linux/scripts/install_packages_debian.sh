@@ -45,7 +45,6 @@ ln -s $DOTDIR/src/.zshrc $HOME/.zshrc
 ln -s $DOTDIR/src/.zsh_aliases $HOME/.zsh_aliases
 . $HOME/.zshrc
 
-
 # Update repositories.
 echo $PSWD | sudo -S apt update && sudo apt upgrade -y
 
@@ -64,9 +63,6 @@ git config --global user.email "$USER_EMAIL"
 git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf --branch v0.11.3
 . $HOME/.zshrc
 
-# Install Laguages.
-. $DOTDIR/scripts/install_languages.sh
-
 # Clone and install neovim.
 git clone https://github.com/neovim/neovim $HOME/neovim
 cd $HOME/neovim && make CMAKE_BUILD_TYPE=RelWithDebInfo
@@ -75,18 +71,22 @@ echo $PSWD | sudo -S make install
 cd $HOME
 
 # Install NvChad
-git clone https://github.com/NvChad/NvChad $HOME/.config/nvim --depth 1 && nvim --headless +q
+git clone https://github.com/NvChad/NvChad $HOME/.config/nvim --depth 1 && nvim +q
 rm -rf $HOME/.config/nvim/lua/custom
 ln -s $DOTDIR/src/custom $HOME/.config/nvim/lua/custom
 nvim --headless +q
 cd $HOME
 
-# Install LSP via Mason
-nvim --headless +"MasonInstallAll" +q
+# Install lazygit
+LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+tar xf lazygit.tar.gz lazygit
+sudo install lazygit /usr/local/bin
 
-# Install lazygit via go.
-go install github.com/jesseduffield/lazygit@latest
-asdf reshim golang
+# Install asdf-rust
+asdf plugin-add rust https://github.com/asdf-community/asdf-rust.git
+asdf install rust latest
+asdf global rust latest
 
 # Install dust
 cargo install du-dust

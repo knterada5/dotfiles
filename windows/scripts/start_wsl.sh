@@ -23,5 +23,6 @@ if (! ping -c 2 google.com > /dev/null 2>&1); then
   fi
 fi
 
-curl -LO https://raw.githubusercontent.com/knterada5/.dotfiles/main/install_linux.sh; source install_linux.sh $PSWD $USER_NAME $USER_EMAIL
+curl -Lo $HOME/install_linux.sh https://raw.githubusercontent.com/knterada5/dotfiles/main/install_linux.sh; source $HOME/install_linux.sh $PSWD $USER_NAME $USER_EMAIL
+rm $HOME/install_linux.sh
 exit

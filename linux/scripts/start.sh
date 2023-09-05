@@ -75,7 +75,6 @@ case $OS in
     elif [[ $DIST =~ "debian" ]] || [[ $DIST =~ "ubuntu" ]]; then
       echo $PSWD | sudo -S apt update && sudo apt upgrade -y
       . $DIR/scripts/install_zsh_debian.sh $PSWD
-      . $DIR/scripts/install_fonts.sh $PSWD
       zsh $DIR/scripts/install_packages_debian.sh $PSWD $USER_NAME $USER_EMAIL
       keygen
       exit

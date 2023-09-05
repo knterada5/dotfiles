@@ -3,9 +3,9 @@ if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 
 
 # Set Auto login
+$defaultUserName = $env:username
 echo "The information below is only used for login to reboot"
-$defaultUserName = Read-Host "Enter windows account name: "
-$UserPassword = Read-Host "Enter your account password: " -AsSecureString
+$UserPassword = Read-Host "Enter your account password (not PIN): " -AsSecureString
 $bstrUserPassword = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($UserPassword)
 $defaultPassword = [System.Runtime.InteropServices.Marshal]::PtrToStringBSTR($bstrUserPassword)
 
@@ -53,5 +53,6 @@ winget install --id Git.Git --accept-source-agreements --accept-package-agreemen
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
 
 # Clone dotfiles and set up
-git clone https://github.com/knterada5/.dotfiles.git $HOME\.dotfiles
+git config --global core.autocrlf false
+git clone https://github.com/knterada5/dotfiles.git $HOME\.dotfiles
 pwsh $HOME\.dotfiles\windows\scripts/setup.ps1
