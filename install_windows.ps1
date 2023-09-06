@@ -6,6 +6,8 @@ if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 $defaultUserName = $env:username
 echo "The information below is only used for login to reboot"
 $UserPassword = Read-Host "Enter your account password (not PIN): " -AsSecureString
+$GitName = Read-Host "Enter your name for git: "
+$GitEmai = Read-Host "Enter your email address for git: "
 $bstrUserPassword = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($UserPassword)
 $defaultPassword = [System.Runtime.InteropServices.Marshal]::PtrToStringBSTR($bstrUserPassword)
 
@@ -54,5 +56,9 @@ $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";
 
 # Clone dotfiles and set up
 git config --global core.autocrlf false
+git config --global user.name $GitName
+git config --global user.email $GitEmai
 git clone https://github.com/knterada5/dotfiles.git $HOME\.dotfiles
+$pcname = hostname
+takeown /s $pcname /F $HOME\.dotfiles /R 
 pwsh $HOME\.dotfiles\windows\scripts/setup.ps1

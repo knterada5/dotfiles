@@ -15,4 +15,7 @@ nvim -v
 
 print "\n# lazygit version:"
 lazygit -v
+
+print "\n# BaseX version:"
+basex -c info | grep Version
 print "\n--------------------------------------------\n\n"

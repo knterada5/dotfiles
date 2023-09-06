@@ -33,6 +33,9 @@ winget install --id JesseDuffield.lazygit --accept-source-agreements --accept-pa
 # Install PowerToys
 winget install --id Microsoft.PowerToys --accept-source-agreements --accept-package-agreements
 
+# Install Zoom
+winget install --id Zoom.Zoom --accept-source-agreements --accept-package-agreements
+
 # Setting Path
 $7Z = ";" + $env:Programfiles + "\7-Zip\"
 $code = ";" + $HOME + "\AppData\Local\Programs\Microsoft VS Code\"
