@@ -36,6 +36,9 @@ winget install --id Microsoft.PowerToys --accept-source-agreements --accept-pack
 # Install Zoom
 winget install --id Zoom.Zoom --accept-source-agreements --accept-package-agreements
 
+# Install vivladi
+winget install --id VivaldiTechnologies.Vivaldi --accept-source-agreements --accept-package-agreements
+
 # Setting Path
 $7Z = ";" + $env:Programfiles + "\7-Zip\"
 $code = ";" + $HOME + "\AppData\Local\Programs\Microsoft VS Code\"

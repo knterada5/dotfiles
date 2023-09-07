@@ -41,15 +41,14 @@ wsl --install -n
 # Set up Config
 # Setup config for windows terminal app
 $WT_CONF = $RootDir + "\config\WindowsTerminal\settings.json"
-New-Item -Value $WT_CONF -Path "$HOME\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json" -ItemType SymbolicLink -Force
+Copy-Item $WT_CONF -Destination "$HOME\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json" -Force
 
 # Install VSCode extensions and set up config
 $VSCode_ext = $RootDir + "\config\VSCode\extensions.json"
 $VSCode_settings = $RootDir + "\config\VSCode\settings.json"
 rm $HOME\.vscode\extensions\ -Recurse
-New-Item -Value $VSCode_settings -Path $HOME\AppData\Roaming\Code\User\settings.json -ItemType SymbolicLink -Force
-New-Item -Value $VSCode_ext -Path $HOME\.vscode\extensions\extensions.json -ItemType SymbolicLink -Force
-sls '"identifier":{"id":".*?"' $VSCode_ext -AllMatches | % {$_.Matches.Value} | % {$_ -replace '"identifier":{"id":"', ''} | % {$_ -replace '"', ''} | % {& $HOME\AppData\Local\Programs\'Microsoft VS Code'\bin\code.cmd --install-extension $_}
+Copy-Item $VSCode_settings -Destination $HOME\AppData\Roaming\Code\User\settings.json -Force
+gc $VSCode_ext | % {& $HOME\AppData\Local\Programs\'Microsoft VS Code'\bin\code.cmd --install-extension $_}
 
 # Setting Hotkey
 $WsShell = New-Object -ComObject WScript.Shell
@@ -60,7 +59,7 @@ $Ubuntu_Shc.HotKey = "ALT+CTRL+U"
 $Ubuntu_Shc.Save()
 
 $Pwsh_Shc = $WsShell.CreateShortcut("$HOME\AppData\Roaming\Microsoft\Windows\Start Menu\Shortcut\pwsh.lnk")
-$Pwsh_Shc.TargetPath = "pwsh"
+$Pwsh_Shc.TargetPath = "wt.exe"
 $Pwsh_Shc.Hotkey = "ALT+CTRL+P"
 $Pwsh_Shc.Save()
 
