@@ -11,7 +11,7 @@ Set-ItemProperty -path $regLogonKey -name "DefaultPassword" -value ""
 # Restore PowerToys settings
 mkdir $HOME\Documents\PowerToys\Backup
 $PT_CONF = $RootDir + "\config\PowerToys\settings_*"
-Copy-Item $PT_CONF -Destination "$HOME\Documents\PowerToys\Backup"
+Copy-Item $PT_CONF -Destination "$HOME\Documents\PowerToys\Backup" -Force
 Start-Process $HOME\AppData\Local\PowerToys\PowerToys.exe
 $wsobj = new-object -comobject wscript.shell
 $result = $wsobj.popup("[全般]→[バックアップ&復元]→[復元]", 0, "PowerToys 設定の復元")

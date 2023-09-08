@@ -63,6 +63,12 @@ $Pwsh_Shc.TargetPath = "wt.exe"
 $Pwsh_Shc.Hotkey = "ALT+CTRL+P"
 $Pwsh_Shc.Save()
 
+# Add Path to commands
+$cmd = ";" + $RootDir + "cmd"
+$PATH = $ENV:Path + $cmd
+[System.Environment]::SetEnvironmentVariable("Path", $PATH, "User")
+$env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+
 # Change Registry
 cd $PSScriptRoot
 . .\regset.ps1
