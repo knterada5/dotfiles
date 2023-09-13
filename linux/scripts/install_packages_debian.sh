@@ -105,6 +105,9 @@ echo $PSWD | sudo -S usermod -aG docker $USER
 
 # Remove install file.
 echo $PSWD | sudo -S rm -r $HOME/neovim
+rm $HOME/lazygit
+rm $HOME/lazygit.tar.gz
+rm $HOME/install_linux.sh
 
 # List of packages version.
 . $DOTDIR/scripts/log.sh >> $HOME/installed_versions.log
